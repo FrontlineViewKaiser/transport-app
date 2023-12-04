@@ -12,9 +12,9 @@ export class DashboardComponent {
 
   goToFavourites() {
     if (this.userStatus == 'supplier') {
-      this.router.navigateByUrl('driver');
+      this.router.navigateByUrl('/home/driver');
     } else {
-      this.router.navigateByUrl('supplier');
+      this.router.navigateByUrl('/home/supplier');
     }
   }
 

@@ -2,8 +2,15 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FormGroupDirective, NgForm, FormsModule } from '@angular/forms';
-import { addDoc } from '@angular/fire/firestore/firebase';
+import { addDoc, doc, setDoc } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase.service';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
+import { Router } from '@angular/router';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +18,10 @@ import { FirebaseService } from '../firebase.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  constructor(private FirebaseService: FirebaseService) {}
+  constructor(
+    private FirebaseService: FirebaseService,
+    private router: Router
+  ) {}
 
   signUp: boolean = false;
   driver: boolean = false;
@@ -137,7 +147,12 @@ export class LoginComponent {
     Validators.required,
     Validators.email,
   ]);
+
   nameFormControl = new FormControl('', [Validators.required]);
+  passwordFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(6),
+  ]);
   phoneFormControl = new FormControl('', Validators.required);
   locationsEUFormControl = new FormControl('', Validators.required);
   locationsUAFormControl = new FormControl('', Validators.required);
@@ -146,20 +161,12 @@ export class LoginComponent {
   matcher = new ErrorStateMatcher();
 
   async createUser() {
-    await addDoc(this.FirebaseService.userColl, {
-      profile: this.compileProfile(),
-      favorites: [],
-      status: '',
-      color: this.getColor(this.nameFormControl.value),
-      id: '',
-      driver: this.driver,
-    })
-      .catch((err) => {
-        console.error(err);
-      })
-      .then((docRef: any) => {
-        console.log(this.compileProfile())
-      });
+    this.createAuthentication();
+    this.saveUserProfile();
+
+    this.signUp = false;
+    this.driver = false;
+    this.supplier = false;
   }
 
   compileProfile() {
@@ -184,6 +191,8 @@ export class LoginComponent {
         goods: this.goodsFormControl.value,
         reviews: [],
       };
+    } else {
+      return null;
     }
   }
 
@@ -193,5 +202,63 @@ export class LoginComponent {
       .reduce((sum, char) => sum + char.charCodeAt(0), 0);
     const colorIndex = sum % this.colors.length;
     return this.colors[colorIndex];
+  }
+
+  async createAuthentication() {
+    let email = this.emailFormControl.value;
+    let password = this.passwordFormControl.value;
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        this.router.navigate(['/home/dash']);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  }
+
+  async logIn() {
+    let email = this.emailFormControl.value;
+    let password = this.passwordFormControl.value;
+    let auth = getAuth();
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log('User created successfully', userCredential);
+      this.router.navigate(['/home/dash']);
+    } catch (error) {
+      console.error('Error creating authenticated user', error);
+    }
+  }
+
+  saveUserProfile() {
+    let userData = {
+      profile: this.compileProfile(),
+      favorites: [],
+      color: this.getColor(this.nameFormControl.value),
+      id: '',
+      driver: this.driver,
+    };
+
+    this.postUserProfile(userData);
+  }
+
+  async postUserProfile(userData) {
+    let uid = Credential.user.uid;
+    let userDoc = doc(this.FirebaseService.userColl, `users/${user.uid}`)
+    await setDoc(userDoc, userData)
+    .catch((err) => {
+        console.error(err);
+      })
+      .then((docRef: any) => {
+        console.log(this.compileProfile());
+      });
   }
 }

@@ -32,7 +32,6 @@
                             </mat-error>
                         </mat-form-field>
 
-
                         <mat-form-field class="example-full-width">
                             <mat-label>Email</mat-label>
                             <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
@@ -46,7 +45,6 @@
                             </mat-error>
                         </mat-form-field>
 
-
                         <mat-form-field class="example-full-width">
                             <mat-label>Telephone</mat-label>
                             <input type="tel" matInput [formControl]="phoneFormControl">
@@ -55,69 +53,75 @@
                             </mat-error>
                         </mat-form-field>
 
-                    </div>
-                </div>
-                <div class="wrapper">
-                    <h2>Business</h2>
-                    <div>
                         <mat-form-field class="example-full-width">
-                            <mat-label>Telephone</mat-label>
-                            <input type="tel" matInput [formControl]="phoneFormControl">
-                            <mat-error *ngIf="phoneFormControl.hasError('required')">
-                                Phonenumber is <strong>required</strong>
+                            <mat-label>Password</mat-label>
+                            <input type="text" matInput [formControl]="passwordFormControl">
+                            <mat-error *ngIf="passwordFormControl.hasError('required')">
+                                Password is <strong>required</strong>
                             </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <mat-label>Shipping from</mat-label>
-                            <mat-select [formControl]="locationsEUFormControl" multiple>
-                                <mat-option *ngFor="let location of locationsEU" [value]="location">{{ location
-                                    }}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="locationsEUFormControl.hasError('required')">
-                                Locations are <strong>required</strong>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <mat-label>Shipping to</mat-label>
-                            <mat-select [formControl]="locationsUAFormControl" multiple>
-                                <mat-option *ngFor="let location of locationsUA" [value]="location">{{ location
-                                    }}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="locationsEUFormControl.hasError('required')">
-                                Locations are <strong>required</strong>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field *ngIf="driver">
-                            <mat-label>Vehicle</mat-label>
-                            <mat-select [formControl]="vehicleFormControl" multiple>
-                                <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">{{ vehicle
-                                    }}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="locationsEUFormControl.hasError('required')">
-                                Vehicle is <strong>required</strong>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <mat-label>Goods</mat-label>
-                            <mat-select [formControl]="goodsFormControl" multiple>
-                                <mat-option *ngFor="let good of goods" [value]="good">{{ good }}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="locationsEUFormControl.hasError('required')">
-                                Goods are <strong>required</strong>
-                            </mat-error>
+                            <mat-error *ngIf="passwordFormControl.hasError('minlength')">
+                                Password must be at least <strong>6 characters long</strong>
+                              </mat-error>
                         </mat-form-field>
 
                     </div>
                 </div>
+                <div>
+                    <div class="wrapper">
+                        <h2>Business</h2>
+                        <div>
+                            <mat-form-field>
+                                <mat-label>Shipping from</mat-label>
+                                <mat-select [formControl]="locationsEUFormControl" multiple>
+                                    <mat-option *ngFor="let location of locationsEU" [value]="location">{{ location
+                                        }}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="locationsEUFormControl.hasError('required')">
+                                    Locations are <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Shipping to</mat-label>
+                                <mat-select [formControl]="locationsUAFormControl" multiple>
+                                    <mat-option *ngFor="let location of locationsUA" [value]="location">{{ location
+                                        }}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="locationsEUFormControl.hasError('required')">
+                                    Locations are <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngIf="driver">
+                                <mat-label>Vehicle</mat-label>
+                                <mat-select [formControl]="vehicleFormControl" multiple>
+                                    <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">{{ vehicle
+                                        }}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="locationsEUFormControl.hasError('required')">
+                                    Vehicle is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Goods</mat-label>
+                                <mat-select [formControl]="goodsFormControl" multiple>
+                                    <mat-option *ngFor="let good of goods" [value]="good">{{ good }}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="locationsEUFormControl.hasError('required')">
+                                    Goods are <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+                    <span>*required fields</span>
+                </div>
+
             </form>
             <div class="button-wrapper">
                 <button mat-raised-button (click)="signUp = false; driver = false; supplier = false">Login</button>
-                <button mat-raised-button color="primary"
-                    (click)="compileProfile(); signUp = false; driver = false; supplier = false">Create
+                <button mat-raised-button color="primary" (click)="createUser()">Create
                     Account</button>
             </div>
         </div>

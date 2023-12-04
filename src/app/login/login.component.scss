@@ -81,6 +81,9 @@ section {
       align-items: center;
       flex-direction: column;
       gap: 48px;
+      span {
+        color: rgb(161, 161, 161);
+      }
     }
   }
 
@@ -116,6 +119,8 @@ section {
     gap: 12px;
     border: solid 1px grey;
     padding: 24px 8px 8px 8px;
+    border-radius: 12px;
+    box-shadow: 0 0 3px 2px lightgrey;
 
     h2 {
       position: absolute;
@@ -126,11 +131,11 @@ section {
     }
 
     div {
-        align-items: center;
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap-reverse;
-        gap: 12px;
+      align-items: center;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap-reverse;
+      gap: 12px;
     }
   }
 
