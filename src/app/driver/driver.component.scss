@@ -1,0 +1,40 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2%
+}
+
+.driver-card {
+    margin-bottom: 24px;
+
+    .header {
+        display: flex;
+        justify-content: center;
+    }
+
+    img {
+        width: 205px;
+    }
+
+    .buttons {
+        width: 100%;
+        justify-content: space-between;
+
+        button {
+            display: flex;
+            background-color: white;
+            align-items: center;
+            border: none;
+            padding: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(128, 128, 128, 0.17);
+            }
+        }
+    }
+}
+

@@ -1,0 +1,144 @@
+<button routerLink="home/dash">Go Go Go</button>
+
+<section>
+    <div *ngIf="!signUp" class="login-field">
+        <div class="headline-wrapper">
+            <h1>Welcome!</h1>
+            <mat-divider class="mat-divider"></mat-divider>
+        </div>
+
+        <div class="input-wrapper">
+            <input type="text" placeholder="E-Mail">
+            <input type="text" placeholder="Password">
+        </div>
+        <div class="button-wrapper">
+            <button mat-raised-button (click)="signUp = true">Create Account</button>
+            <button mat-raised-button color="primary">Login</button>
+        </div>
+    </div>
+
+    <div class="signUp" *ngIf="signUp">
+        <div *ngIf="signUp && (driver || supplier)" class="signup-container">
+            <h1 class="headline">Sign Up</h1>
+            <form class="example-form">
+                <div class="wrapper">
+                    <h2>Personal Information</h2>
+                    <div>
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Name</mat-label>
+                            <input type="text" matInput [formControl]="nameFormControl">
+                            <mat-error *ngIf="nameFormControl.hasError('required')">
+                                Name is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Email</mat-label>
+                            <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+                                placeholder="Ex. pat@example.com">
+                            <mat-error
+                                *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                                Please enter a valid email address
+                            </mat-error>
+                            <mat-error *ngIf="emailFormControl.hasError('required')">
+                                Email is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Telephone</mat-label>
+                            <input type="tel" matInput [formControl]="phoneFormControl">
+                            <mat-error *ngIf="phoneFormControl.hasError('required')">
+                                Phonenumber is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <h2>Business</h2>
+                    <div>
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Telephone</mat-label>
+                            <input type="tel" matInput [formControl]="phoneFormControl">
+                            <mat-error *ngIf="phoneFormControl.hasError('required')">
+                                Phonenumber is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Shipping from</mat-label>
+                            <mat-select [formControl]="locationsEUFormControl" multiple>
+                                <mat-option *ngFor="let location of locationsEU" [value]="location">{{ location
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="locationsEUFormControl.hasError('required')">
+                                Locations are <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Shipping to</mat-label>
+                            <mat-select [formControl]="locationsUAFormControl" multiple>
+                                <mat-option *ngFor="let location of locationsUA" [value]="location">{{ location
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="locationsEUFormControl.hasError('required')">
+                                Locations are <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="driver">
+                            <mat-label>Vehicle</mat-label>
+                            <mat-select [formControl]="vehicleFormControl" multiple>
+                                <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">{{ vehicle
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="locationsEUFormControl.hasError('required')">
+                                Vehicle is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Goods</mat-label>
+                            <mat-select [formControl]="goodsFormControl" multiple>
+                                <mat-option *ngFor="let good of goods" [value]="good">{{ good }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="locationsEUFormControl.hasError('required')">
+                                Goods are <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+            </form>
+            <div class="button-wrapper">
+                <button mat-raised-button (click)="signUp = false; driver = false; supplier = false">Login</button>
+                <button mat-raised-button color="primary"
+                    (click)="compileProfile(); signUp = false; driver = false; supplier = false">Create
+                    Account</button>
+            </div>
+        </div>
+
+        <div class="choice-field" *ngIf="signUp && !driver && !supplier">
+            <div class="headline-wrapper">
+                <h1>Are you looking to ship or provide supplies?</h1>
+                <mat-divider class="mat-divider"></mat-divider>
+            </div>
+            <div class="choice-wrapper">
+                <button mat-raised-button color="primary" (click)="driver = true">
+                    I do the shipping
+                    <mat-icon class="icon" fontIcon="local_shipping"></mat-icon>
+                </button>
+                <button mat-raised-button color="primary" (click)="supplier = true">
+                    I provide supplies
+                    <mat-icon class="icon" fontIcon="emoji_people"></mat-icon>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</section>

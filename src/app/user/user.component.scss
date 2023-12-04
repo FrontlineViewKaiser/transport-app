@@ -1,0 +1,102 @@
+
+h1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 32px;
+  }
+  
+  
+  .user-card {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 2%;
+  }
+  
+  h3 {
+    font-weight: 400;
+    font-size: 20px;
+    margin-right: 8px;
+  }
+  
+  .field {
+    display: flex;
+    align-items: flex-end;
+    white-space: nowrap;
+  }
+  
+  .personal {
+    margin-bottom: 24px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 32px;
+    min-width: 280px;
+    width: 30%;
+  
+    img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+    }
+  
+    .name {
+      font-weight: 400;
+      font-size: 24px;
+    }
+  }
+  
+  .contact {
+    margin-bottom: 24px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 32px;
+    min-width: 280px;
+    width: 30%;
+  }
+  
+  .transport {
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 32px;
+    min-width: 280px;
+    width: 30%;
+  }
+  
+  .reviews {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 280px;
+  
+    div {
+      display: flex;
+      gap: 16px;
+      overflow-x: scroll;
+    }
+  
+    .review-card {
+      height: 100%;
+      width: 100%;
+      min-width: 260px;
+    }
+  }
+  
+  .button-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+  }
+  
+  @media (max-width: 1350px) {
+  }
+  

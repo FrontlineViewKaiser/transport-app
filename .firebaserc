@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "transport-app-c7031"
+  },
+  "targets": {
+    "transport-app-c7031": {
+      "hosting": {
+        "transport-app": [
+          "transport-app-c7031"
+        ]
+      }
+    }
+  }
+}

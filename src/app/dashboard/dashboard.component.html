@@ -1,0 +1,32 @@
+<Div class="dashboard">
+    <div class="wrapper">
+        <div class="block" routerLink="driver">
+            <mat-icon class="icon" fontIcon="local_shipping"></mat-icon>
+            <div>
+                <h2>14</h2>
+                <span>Drivers</span>
+            </div>
+
+        </div>
+        <div class="block" routerLink="supplier">
+            <mat-icon class="icon" fontIcon="emoji_people"></mat-icon>
+            <div>
+                <h2>53</h2>
+                <span>Suppliers </span>
+            </div>
+
+        </div>
+        <div class="block" (click)="goToFavourites()">
+            <mat-icon class="icon" fontIcon="grade"></mat-icon>
+            <div>
+                <h2>2</h2>
+                <span>Favourites</span>
+            </div>
+
+        </div>
+    </div>
+    <div class="greetings-wrapper">
+        <h1 class="greeting">Доброго дня Taras!</h1>
+    </div>
+
+</Div>
