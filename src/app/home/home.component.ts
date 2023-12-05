@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { getAuth, signOut } from 'firebase/auth';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-home',
@@ -7,12 +7,5 @@ import { getAuth, signOut } from 'firebase/auth';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-
-  
-  signOut() {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {})
-      .catch((error) => {});
-  }
+  constructor(public FirebaseService: FirebaseService) {}
 }

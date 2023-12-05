@@ -143,6 +143,16 @@ export class LoginComponent {
     '#FFBB2B',
   ];
 
+  loginEmailFormControl = new FormControl('', [
+    Validators.required,
+    Validators.email,
+  ]);
+
+  loginPasswordFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(6),
+  ]);
+
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -159,15 +169,6 @@ export class LoginComponent {
   vehicleFormControl = new FormControl('', Validators.required);
   goodsFormControl = new FormControl('', Validators.required);
   matcher = new ErrorStateMatcher();
-
-  async createUser() {
-    this.createAuthentication();
-    this.saveUserProfile();
-
-    this.signUp = false;
-    this.driver = false;
-    this.supplier = false;
-  }
 
   compileProfile() {
     if (this.driver) {
@@ -205,13 +206,16 @@ export class LoginComponent {
   }
 
   async createAuthentication() {
+    debugger;
     let email = this.emailFormControl.value;
     let password = this.passwordFormControl.value;
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        this.router.navigate(['/home/dash']);
+        console.log(user);
+        this.postUserProfile(user.uid);
+        this.firebaseSignIn(auth, email, password);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -221,44 +225,46 @@ export class LoginComponent {
   }
 
   async logIn() {
-    let email = this.emailFormControl.value;
-    let password = this.passwordFormControl.value;
-    let auth = getAuth();
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log('User created successfully', userCredential);
-      this.router.navigate(['/home/dash']);
-    } catch (error) {
-      console.error('Error creating authenticated user', error);
-    }
+    let email = this.loginEmailFormControl.value;
+    let password = this.loginPasswordFormControl.value;
+    const auth = getAuth();
+    this.firebaseSignIn(auth, email, password);
   }
 
-  saveUserProfile() {
-    let userData = {
-      profile: this.compileProfile(),
-      favorites: [],
-      color: this.getColor(this.nameFormControl.value),
-      id: '',
-      driver: this.driver,
-    };
-
-    this.postUserProfile(userData);
+  firebaseSignIn(auth, email, password) {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        this.FirebaseService.retrieveUserData();
+        this.FirebaseService.retrieveCurrentUser(user.uid);
+        this.router.navigate(['/home/dash']);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   }
 
-  async postUserProfile(userData) {
-    let uid = Credential.user.uid;
-    let userDoc = doc(this.FirebaseService.userColl, `users/${user.uid}`)
+  async postUserProfile(uid) {
+    let userData = this.saveUserProfile(uid);
+    let userDoc = doc(this.FirebaseService.userColl, uid);
     await setDoc(userDoc, userData)
-    .catch((err) => {
+      .catch((err) => {
         console.error(err);
       })
       .then((docRef: any) => {
-        console.log(this.compileProfile());
+        console.log(userData);
       });
+  }
+
+  saveUserProfile(uid) {
+    return {
+      profile: this.compileProfile(),
+      favorites: [],
+      color: this.getColor(this.nameFormControl.value),
+      id: uid,
+      driver: this.driver,
+    };
   }
 }
