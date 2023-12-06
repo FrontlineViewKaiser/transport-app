@@ -1,17 +1,17 @@
 <div class="wrapper">
-    <mat-card  class="driver-card" *ngFor="let driver of drivers">
-        <mat-card-header class="header" (click)="openDialog(DetailDialogue)">
-          <mat-card-title>Woyczek</mat-card-title>
+    <mat-card  class="driver-card" *ngFor="let driver of drivers, let index = index">
+        <mat-card-header class="header" (click)="openDialog(DetailDialogue, driver)">
+          <mat-card-title>{{driver.profile.name}}</mat-card-title>
         </mat-card-header>
-        <img (click)="openDialog(DetailDialogue)" src="assets/img/1672319267903.jpg" alt="">
-        <mat-card-content (click)="openDialog(DetailDialogue)">
-            <h3>Shipping from:</h3> Germany, Poland, Denmark
-            <h3>Shipping to:</h3> Kharkov, Dniepro, Kyiv, Lviv
-            <h3>Is Shipping:</h3> Arms, Humanitarian, Food
-            <h3>Vehicle:</h3> VW Sprinter
+        <img (click)="openDialog(DetailDialogue, driver)" src="assets/img/1672319267903.jpg" alt="">
+        <mat-card-content (click)="openDialog(DetailDialogue, driver)">
+            <h3>Shipping from:</h3> <p *ngFor="let location of driver.profile.from">{{ location }}</p>
+            <h3>Shipping to:</h3> <p *ngFor="let destination of driver.profile.to">{{ destination }}</p>
+            <h3>Is Shipping:</h3> <p *ngFor="let goods of driver.profile.goods">{{ goods }}</p>
+            <h3>Vehicle:</h3>  <p *ngFor="let vehicle of driver.profile.vehicle">{{ vehicle }}</p>
         </mat-card-content>
         <mat-card-actions class="buttons">
-            <button (click)="openDialog(ContactDialogue)">
+            <button (click)="openDialog(ContactDialogue, driver)">
                 <mat-icon>call</mat-icon>
             </button>
           <button>

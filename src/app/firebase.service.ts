@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getAuth, signOut } from '@angular/fire/auth';
+import { Auth, getAuth, signOut } from '@angular/fire/auth';
 import {
   Firestore,
   addDoc,
@@ -8,6 +8,7 @@ import {
   onSnapshot,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,19 +21,24 @@ export class FirebaseService {
 
   unsubUser;
   unsubCurrentUser;
-  userList = [];
-  currentUser = {};
 
-  constructor(public firestore: Firestore, private router: Router) {
+  constructor(
+    public firestore: Firestore,
+    private router: Router,
+    public auth: Auth
+  ) {
     this.setupSubscriptions();
     this.retrieveUserData();
-    let auth = getAuth().currentUser;
-
-    if (auth) {
-      this.retrieveCurrentUser(auth.uid);
-    } else {
-      console.log('no user')
-    }
+    this.auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.retrieveCurrentUser(user.uid);
+      } else {
+        console.error('NO USER');
+        this.unsubUser();
+        this.unsubCurrentUser();
+        this.router.navigate(['']);
+      }
+    });
   }
 
   setupSubscriptions() {
@@ -43,20 +49,26 @@ export class FirebaseService {
   }
 
   retrieveUserData() {
-    this.unsubUser = onSnapshot(this.userColl, (users) => {
-      this.userList = [];
-      users.forEach((user) => {
-        this.userList.push(user.data());
-      });
+    return new Observable((subscriber) => {
+      this.unsubUser = onSnapshot(this.userColl, (users) => {
+        let userList = [];
+        users.forEach((user) => {
+          userList.push(user.data());
+        });
 
-      console.log('Userlist:', this.userList);
+        console.log('Userlist:', userList);
+        subscriber.next(userList);
+      });
     });
   }
 
   retrieveCurrentUser(uid) {
-    this.unsubCurrentUser = onSnapshot(doc(this.userColl, uid), (user) => {
-      this.currentUser = user.data();
-      console.log('currentUser:', this.currentUser);
+    return new Observable((subscriber) => {
+      this.unsubCurrentUser = onSnapshot(doc(this.userColl, uid), (user) => {
+        let currentUser = user.data();
+        console.log('currentUser:', currentUser);
+        subscriber.next(currentUser);
+      });
     });
   }
 
@@ -67,13 +79,9 @@ export class FirebaseService {
         if (this.unsubUser) {
           this.unsubUser();
           this.unsubCurrentUser();
-          this.userList = [];
-          this.currentUser = {};
           this.router.navigate(['']);
         }
       })
       .catch((error) => {});
   }
-
-
 }

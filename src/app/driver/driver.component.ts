@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { DetailDialogueComponent } from '../detail-dialogue/detail-dialogue.component';
 import { ContactDialogueComponent } from '../contact-dialogue/contact-dialogue.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FirebaseService } from '../firebase.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-driver',
@@ -12,21 +13,25 @@ import { FirebaseService } from '../firebase.service';
 export class DriverComponent {
   DetailDialogue = DetailDialogueComponent
   ContactDialogue = ContactDialogueComponent
+  subscription;
   drivers = []
 
   constructor(public dialog: MatDialog, public FirebaseService: FirebaseService) {
-    this.getDriverData() 
+    this.subscription = this.FirebaseService.retrieveUserData().subscribe(users => {
+      this.drivers = (users as any[]).filter(user => user.driver === true);
+      console.log('driverlist:', this.drivers);
+    });
   }
 
-  openDialog(component) {
-    this.dialog.open(component);
+  openDialog(component, driver) {
+    
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      driver: driver
+    };
+    this.dialog.open(component, dialogConfig);
   }
 
-  getDriverData() {
-   let users = this.FirebaseService.userList
-   this.drivers = users.filter(user => user.driver == true)
-   console.log('driverlist:', this.drivers)
-  }
 
 
 

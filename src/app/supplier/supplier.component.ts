@@ -13,20 +13,19 @@ export class SupplierComponent {
   DetailDialogue = DetailDialogueComponent
   ContactDialogue = ContactDialogueComponent
   suppliers = []
+  subscription: any;
 
   constructor(public dialog: MatDialog, public FirebaseService: FirebaseService) {
-    this.getSupplierData() 
+    this.subscription = this.FirebaseService.retrieveUserData().subscribe(users => {
+      this.suppliers = (users as any[]).filter(user => user.driver === true);
+      console.log('driverlist:', this.suppliers);
+    });
   }
 
   openDialog(component) {
     this.dialog.open(component);
   }
 
-  getSupplierData() {
-   let users = this.FirebaseService.userList
-   this.suppliers = users.filter(user => user.driver == true)
-   console.log('driverlist:', this.suppliers)
-  }
 
   
 }
