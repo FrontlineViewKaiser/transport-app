@@ -1,29 +1,36 @@
-import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { getDownloadURL } from '@angular/fire/storage';
+import { Component, Injectable, inject } from '@angular/core';
+import { getStorage, provideStorage, ref, uploadBytesResumable } from '@angular/fire/storage';
 import { finalize } from 'rxjs';
+
+@Component({
+  selector: 'app-storage',
+  template: `
+      <h1>Storage</h1>
+      <label for="fileUpload">Choose a File</label>
+      <input id="fileUpload" type="file" #upload>
+      <button (click)="uploadFile(upload)">Upload</button>
+  `,
+})
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
+  private readonly storage: Storage = inject(Storage);
 
-  constructor(public storage: AngularFireStorage) { }
+  uploadFile(input: HTMLInputElement) {
+      if (!input.files) return
 
-  uploadFile(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const path = `profile_pictures/${Date.now()}_${file.name}`;
-      const fileRef = this.storage.ref(path);
-      const task = this.storage.upload(path, file);
+      const files: FileList = input.files;
 
-      task.snapshotChanges().pipe(
-        finalize(() => {
-          fileRef.getDownloadURL().subscribe(downloadURL => {
-            resolve(downloadURL);
-          });
-        })
-      ).subscribe();
-    });
+      for (let i = 0; i < files.length; i++) {
+          const file = files.item(i);
+          if (file) {
+              const storageRef = ref(this.storage, file.name);
+              uploadBytesResumable(storageRef, file);
+          }
+      }
   }
-
 }
+
+
