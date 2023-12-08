@@ -17,7 +17,7 @@ export class DriverComponent {
   drivers = []
 
   constructor(public dialog: MatDialog, public FirebaseService: FirebaseService) {
-    this.subscription = this.FirebaseService.retrieveUserData().subscribe(users => {
+    this.subscription = this.FirebaseService.UserSubscription().subscribe(users => {
       this.drivers = (users as any[]).filter(user => user.driver === true);
       console.log('driverlist:', this.drivers);
     });

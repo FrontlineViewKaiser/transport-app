@@ -6,6 +6,7 @@ import {
   collection,
   doc,
   onSnapshot,
+  updateDoc,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -18,20 +19,23 @@ export class FirebaseService {
   driverColl;
   supplierColl;
   reviewsColl;
+  currentUser;
+  currentUserRef;
 
-  unsubUser;
-  unsubCurrentUser;
+  unsubUser
+  unsubCurrentUser
+  currentUsersubscription
 
   constructor(
     public firestore: Firestore,
     private router: Router,
     public auth: Auth
   ) {
-    this.setupSubscriptions();
-    this.retrieveUserData();
+    this.userColl = collection(this.firestore, 'users');
     this.auth.onAuthStateChanged((user) => {
       if (user) {
-        this.retrieveCurrentUser(user.uid);
+
+        this.retrieveCurrentUser(user.uid)
       } else {
         console.error('NO USER');
         this.unsubUser();
@@ -41,47 +45,48 @@ export class FirebaseService {
     });
   }
 
-  setupSubscriptions() {
-    this.userColl = collection(this.firestore, 'users');
-    this.driverColl = collection(this.firestore, 'drivers');
-    this.supplierColl = collection(this.firestore, 'suppliers');
-    this.reviewsColl = collection(this.firestore, 'reviews');
-  }
-
-  retrieveUserData() {
+  UserSubscription() {
     return new Observable((subscriber) => {
       this.unsubUser = onSnapshot(this.userColl, (users) => {
         let userList = [];
         users.forEach((user) => {
           userList.push(user.data());
         });
-
         console.log('Userlist:', userList);
         subscriber.next(userList);
       });
     });
   }
 
-  retrieveCurrentUser(uid) {
+  CurrentUserSubscription(uid) {
     return new Observable((subscriber) => {
       this.unsubCurrentUser = onSnapshot(doc(this.userColl, uid), (user) => {
-        let currentUser = user.data();
-        console.log('currentUser:', currentUser);
-        subscriber.next(currentUser);
+        subscriber.next(user.data());
       });
+    });
+  }
+
+  async updateCurrentUser() {
+    await updateDoc(this.currentUserRef, {
+      profile: this.currentUser.profile,
+      favorites: this.currentUserRef.favorites,
+      color: this.currentUser.color,
+      id: this.currentUser.id,
+      driver: this.currentUser.driver,
     });
   }
 
   signOut() {
     const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        if (this.unsubUser) {
-          this.unsubUser();
-          this.unsubCurrentUser();
-          this.router.navigate(['']);
-        }
-      })
-      .catch((error) => {});
+    signOut(auth).catch((error) => {});
   }
+  
+  retrieveCurrentUser(uid) {
+    this.currentUsersubscription = this.CurrentUserSubscription(uid).subscribe((user) => {
+      this.currentUser = user;
+      console.log('currentUser:', this.currentUser);
+      this.currentUserRef = doc(this.userColl, uid);
+    })
+  }
+
 }

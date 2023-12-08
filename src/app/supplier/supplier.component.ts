@@ -16,9 +16,9 @@ export class SupplierComponent {
   subscription: any;
 
   constructor(public dialog: MatDialog, public FirebaseService: FirebaseService) {
-    this.subscription = this.FirebaseService.retrieveUserData().subscribe(users => {
-      this.suppliers = (users as any[]).filter(user => user.driver === true);
-      console.log('driverlist:', this.suppliers);
+    this.subscription = this.FirebaseService.UserSubscription().subscribe(users => {
+      this.suppliers = (users as any[]).filter(user => user.driver === false);
+      console.log('supplierlist:', this.suppliers);
     });
   }
 

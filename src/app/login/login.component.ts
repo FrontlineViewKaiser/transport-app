@@ -181,6 +181,7 @@ export class LoginComponent {
         vehicle: this.vehicleFormControl.value,
         goods: this.goodsFormControl.value,
         reviews: [],
+        img: ''
       };
     } else if (this.supplier) {
       return {
@@ -191,6 +192,7 @@ export class LoginComponent {
         to: this.locationsUAFormControl.value,
         goods: this.goodsFormControl.value,
         reviews: [],
+        img: ''
       };
     } else {
       return null;
@@ -235,8 +237,6 @@ export class LoginComponent {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        this.FirebaseService.retrieveUserData();
-        this.FirebaseService.retrieveCurrentUser(user.uid);
         this.router.navigate(['/home/dash']);
       })
       .catch((error) => {

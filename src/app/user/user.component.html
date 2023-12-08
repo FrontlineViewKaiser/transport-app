@@ -6,10 +6,10 @@
     <mat-card class="personal">
         <mat-card-title>Personal Information</mat-card-title>
         <mat-card-content>
-            <img src="assets/img/1672319267903.jpg" alt="">
+            <img  alt="">
         </mat-card-content>
         <mat-card-content class="name">Jonas Kratzenberg</mat-card-content>
-        <input type="file" (change)="uploadFile($event)">
+        <input type="file" (change)="this.uploadService.uploadFile(uploadInput)" #uploadInput>
         <div class="button-wrapper">
             <button mat-fab extended color="primary">
                 <mat-icon>edit</mat-icon>
@@ -18,7 +18,7 @@
         </div>
     </mat-card>
     
-
+<!-- [src]="this.uploadService.downloadFile()" -->
 
     <mat-card class="contact">
         <mat-card-title>Contact Information</mat-card-title>
