@@ -42,16 +42,27 @@ export class UploadService {
     }
   }
 
+  // downloadFile() {
+  //   let userRef = this.firebaseService.currentUser.profile.img;
+  //   let placeholder = 'assets/img/blank.png';
+  //   if (userRef != '') {
+  //     let imgRef = ref(this.storage, userRef);
+  //     getDownloadURL(imgRef).then((url) => {
+  //      return url;
+  //     });
+  //   } else {
+  //     return Promise.resolve('assets/img/blank.png');
+  //   }
+  // }
+
   downloadFile() {
     let userRef = this.firebaseService.currentUser.profile.img;
-    let placeholder = 'assets/img/blank.png';
-    if (userRef != '') {
-      let imgRef = ref(this.storage, userRef);
-      getDownloadURL(imgRef).then((url) => {
-       return url;
-      });
-    } else {
-      return
-    }
-  }
+    console.log(userRef)
+  //   if (userRef != '') {
+  //     let imgRef = ref(this.storage, userRef);
+  //     return getDownloadURL(imgRef); // Returns the Promise
+  //   } else {
+  //     return 'assets/img/blank.png'
+  //   }
+}
 }
