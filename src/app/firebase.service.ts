@@ -9,7 +9,7 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,9 +22,10 @@ export class FirebaseService {
   currentUser;
   currentUserRef;
 
-  unsubUser
-  unsubCurrentUser
-  currentUsersubscription
+  unsubUser;
+  unsubCurrentUser;
+  currentUsersubscription;
+  public currentUserSubject = new BehaviorSubject<any>(null);
 
   constructor(
     public firestore: Firestore,
@@ -34,8 +35,7 @@ export class FirebaseService {
     this.userColl = collection(this.firestore, 'users');
     this.auth.onAuthStateChanged((user) => {
       if (user) {
-
-        this.retrieveCurrentUser(user.uid)
+        this.retrieveCurrentUser(user.uid);
       } else {
         console.error('NO USER');
         this.unsubUser();
@@ -62,6 +62,7 @@ export class FirebaseService {
     return new Observable((subscriber) => {
       this.unsubCurrentUser = onSnapshot(doc(this.userColl, uid), (user) => {
         subscriber.next(user.data());
+        this.currentUserSubject.next(user.data());
       });
     });
   }
@@ -69,10 +70,11 @@ export class FirebaseService {
   async updateCurrentUser() {
     await updateDoc(this.currentUserRef, {
       profile: this.currentUser.profile,
-      favorites: this.currentUserRef.favorites,
+      favorites: this.currentUser.favorites,
       color: this.currentUser.color,
       id: this.currentUser.id,
       driver: this.currentUser.driver,
+      img: this.currentUser.img,
     });
   }
 
@@ -87,6 +89,10 @@ export class FirebaseService {
       console.log('currentUser:', this.currentUser);
       this.currentUserRef = doc(this.userColl, uid);
     })
+  }
+
+  ngOnDestroy() {
+    this.currentUsersubscription.unsubscribe()
   }
 
 }

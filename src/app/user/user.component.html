@@ -6,7 +6,7 @@
     <mat-card class="personal">
         <mat-card-title>Personal Information</mat-card-title>
         <mat-card-content>
-            <img [src]="this.uploadService.downloadFile()" alt="">
+            <img #profilePic alt="">
         </mat-card-content>
         <mat-card-content class="name">Jonas Kratzenberg</mat-card-content>
         <input type="file" (change)="this.uploadService.uploadFile(uploadInput)" #uploadInput>

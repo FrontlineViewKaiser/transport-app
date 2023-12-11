@@ -8,8 +8,9 @@ import { UploadService } from '../upload.service';
 })
 export class UserComponent {
 
-  constructor(public uploadService: UploadService) {}
-
-
+  constructor(public uploadService: UploadService) {
+    
+    this.uploadService.downloadFile('profilePic')
+  }
 
 }

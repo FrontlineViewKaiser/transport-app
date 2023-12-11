@@ -8,7 +8,7 @@ import {
   StorageReference,
   getDownloadURL,
 } from '@angular/fire/storage';
-import { finalize } from 'rxjs';
+import { BehaviorSubject, finalize, take } from 'rxjs';
 import { FirebaseService } from './firebase.service';
 
 @Component({
@@ -27,6 +27,9 @@ export class UploadService {
   private readonly storage: Storage = inject(Storage);
   private firebaseService: FirebaseService = inject(FirebaseService);
 
+  currentUser$ = this.firebaseService.currentUserSubject.asObservable();
+
+
   uploadFile(input: HTMLInputElement) {
     if (!input.files) return;
 
@@ -37,32 +40,25 @@ export class UploadService {
       if (file) {
         const storageRef = ref(this.storage, file.name);
         uploadBytesResumable(storageRef, file);
-        console.log(storageRef);
+        console.log(storageRef.fullPath);
+        this.firebaseService.currentUser.img = storageRef.fullPath;
+        this.firebaseService.updateCurrentUser();
       }
     }
   }
 
-  // downloadFile() {
-  //   let userRef = this.firebaseService.currentUser.profile.img;
-  //   let placeholder = 'assets/img/blank.png';
-  //   if (userRef != '') {
-  //     let imgRef = ref(this.storage, userRef);
-  //     getDownloadURL(imgRef).then((url) => {
-  //      return url;
-  //     });
-  //   } else {
-  //     return Promise.resolve('assets/img/blank.png');
-  //   }
-  // }
-
-  downloadFile() {
-    let userRef = this.firebaseService.currentUser.profile.img;
-    console.log(userRef)
-  //   if (userRef != '') {
-  //     let imgRef = ref(this.storage, userRef);
-  //     return getDownloadURL(imgRef); // Returns the Promise
-  //   } else {
-  //     return 'assets/img/blank.png'
-  //   }
-}
+  downloadFile(id) {
+    const img = document.getElementById(id);
+    this.currentUser$.pipe(take(1)).subscribe((currentUser) => {
+      if (currentUser != null && currentUser.img != '') {
+        let imgRef = ref(this.storage, currentUser.img);
+        getDownloadURL(imgRef).then((url) => {
+          console.log(url);
+          img.setAttribute('src', url);
+        });
+      } else {
+        img.setAttribute('src', 'assets/img/blank.png');
+      }
+    });
+  }
 }
