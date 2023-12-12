@@ -22,8 +22,8 @@ export class FirebaseService {
   currentUser;
   currentUserRef;
 
-  unsubUser;
-  unsubCurrentUser;
+  unsubUser() {};
+  unsubCurrentUser() {};
   currentUsersubscription;
   public currentUserSubject = new BehaviorSubject<any>(null);
 
@@ -35,9 +35,9 @@ export class FirebaseService {
     this.userColl = collection(this.firestore, 'users');
     this.auth.onAuthStateChanged((user) => {
       if (user) {
-        this.retrieveCurrentUser(user.uid);
+        this.CurrentUserSubscription(user.uid);
       } else {
-        console.error('NO USER');
+        console.log('no User')
         this.unsubUser();
         this.unsubCurrentUser();
         this.router.navigate(['']);
@@ -59,12 +59,13 @@ export class FirebaseService {
   }
 
   CurrentUserSubscription(uid) {
-    return new Observable((subscriber) => {
       this.unsubCurrentUser = onSnapshot(doc(this.userColl, uid), (user) => {
-        subscriber.next(user.data());
+        this.currentUserRef = doc(this.userColl, uid);
+        this.currentUser = user.data();
+        console.log('currentUser:', this.currentUser);
         this.currentUserSubject.next(user.data());
       });
-    });
+
   }
 
   async updateCurrentUser() {
@@ -83,16 +84,4 @@ export class FirebaseService {
     signOut(auth).catch((error) => {});
   }
   
-  retrieveCurrentUser(uid) {
-    this.currentUsersubscription = this.CurrentUserSubscription(uid).subscribe((user) => {
-      this.currentUser = user;
-      console.log('currentUser:', this.currentUser);
-      this.currentUserRef = doc(this.userColl, uid);
-    })
-  }
-
-  ngOnDestroy() {
-    this.currentUsersubscription.unsubscribe()
-  }
-
 }

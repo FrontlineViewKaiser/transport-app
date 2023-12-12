@@ -8,7 +8,7 @@ import {
   StorageReference,
   getDownloadURL,
 } from '@angular/fire/storage';
-import { BehaviorSubject, finalize, take } from 'rxjs';
+import { BehaviorSubject, Observable, finalize, take } from 'rxjs';
 import { FirebaseService } from './firebase.service';
 
 @Component({
@@ -29,7 +29,6 @@ export class UploadService {
 
   currentUser$ = this.firebaseService.currentUserSubject.asObservable();
 
-
   uploadFile(input: HTMLInputElement) {
     if (!input.files) return;
 
@@ -40,25 +39,27 @@ export class UploadService {
       if (file) {
         const storageRef = ref(this.storage, file.name);
         uploadBytesResumable(storageRef, file);
-        console.log(storageRef.fullPath);
-        this.firebaseService.currentUser.img = storageRef.fullPath;
-        this.firebaseService.updateCurrentUser();
+        console.log(this.storage, file.name);
+        getDownloadURL(storageRef).then((url) => {
+          this.firebaseService.currentUser.img = url
+          this.firebaseService.updateCurrentUser();
+        })
+        
       }
     }
   }
 
-  downloadFile(id) {
-    const img = document.getElementById(id);
-    this.currentUser$.pipe(take(1)).subscribe((currentUser) => {
-      if (currentUser != null && currentUser.img != '') {
-        let imgRef = ref(this.storage, currentUser.img);
-        getDownloadURL(imgRef).then((url) => {
-          console.log(url);
-          img.setAttribute('src', url);
-        });
-      } else {
-        img.setAttribute('src', 'assets/img/blank.png');
-      }
-    });
-  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

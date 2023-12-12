@@ -6,9 +6,9 @@
     <mat-card class="personal">
         <mat-card-title>Personal Information</mat-card-title>
         <mat-card-content>
-            <img #profilePic alt="">
+            <img [src]="(fireBaseService.currentUserSubject | async)?.img || 'assets/img/blank.png'" alt="Profile Picture">
         </mat-card-content>
-        <mat-card-content class="name">Jonas Kratzenberg</mat-card-content>
+        <mat-card-content class="name">{{(fireBaseService.currentUserSubject | async)?.profile.name}}</mat-card-content>
         <input type="file" (change)="this.uploadService.uploadFile(uploadInput)" #uploadInput>
         <div class="button-wrapper">
             <button mat-fab extended color="primary">
@@ -23,10 +23,10 @@
     <mat-card class="contact">
         <mat-card-title>Contact Information</mat-card-title>
         <mat-card-content class="field">
-            <h3>Tel:</h3> +380 1534762199
+            <h3>Tel:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.tel}}
         </mat-card-content>
         <mat-card-content class="field">
-            <h3>Email:</h3> jonas@jonas.de
+            <h3>Email:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.email}}
         </mat-card-content>
         <div class="button-wrapper">
             <button mat-fab extended color="primary">
@@ -40,16 +40,16 @@
     <mat-card class="transport">
         <mat-card-title>Transport Information</mat-card-title>
         <mat-card-content class="field">
-            <h3>Shipping from:</h3> Germany, Poland, Denmark
+            <h3>Shipping from:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.from}}
         </mat-card-content>
         <mat-card-content class="field">
-            <h3>Shipping to:</h3> Kharkov, Dniepro, Kyiv, Lviv
+            <h3>Shipping to:</h3>{{(fireBaseService.currentUserSubject | async)?.profile.to}}
         </mat-card-content>
         <mat-card-content class="field">
-            <h3>Is Shipping:</h3> Arms, Humanitarian, Food
+            <h3>Is Shipping:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.goods}}
         </mat-card-content>
-        <mat-card-content class="field">
-            <h3>Vehicle:</h3> VW Sprinter
+        <mat-card-content class="field" *ngIf="(fireBaseService.currentUserSubject | async)?.driver">
+            <h3>Vehicle:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.vehicle}}
         </mat-card-content>
         <div class="button-wrapper">
             <button mat-fab extended color="primary">

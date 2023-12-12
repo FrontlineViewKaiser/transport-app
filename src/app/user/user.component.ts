@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UploadService } from '../upload.service';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-user',
@@ -8,9 +9,9 @@ import { UploadService } from '../upload.service';
 })
 export class UserComponent {
 
-  constructor(public uploadService: UploadService) {
-    
-    this.uploadService.downloadFile('profilePic')
+  constructor(public uploadService: UploadService, public fireBaseService: FirebaseService) {
   }
+
+
 
 }

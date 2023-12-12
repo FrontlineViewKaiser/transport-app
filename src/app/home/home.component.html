@@ -1,48 +1,55 @@
 <mat-drawer-container class="mat-container" autosize>
-    <mat-drawer #drawer class="sidenav-open" mode="side" [opened]="true">
-      <div class="logo-wrapper" routerLink="" (click)="this.FirebaseService.signOut()">
-        <div>LOGO</div>
-      </div>
-  
-      <div class="sidenav-element" routerLink="dash"  routerLinkActive="grey">
-        <mat-icon class="icon" fontIcon="space_dashboard"></mat-icon>
-        <span>Dashboard</span>
-      </div>
-      <div class="sidenav-element" routerLink="user" routerLinkActive="grey">
-        <mat-icon class="icon" fontIcon="account_circle"></mat-icon>
-        <span>Account</span>
-      </div>
-      <div class="sidenav-element" routerLink="driver" routerLinkActive="grey">
-        <mat-icon class="icon" fontIcon="local_shipping"></mat-icon>
-        <span>Find a Driver</span>
-      </div>
-      <div class="sidenav-element" routerLink="supplier" routerLinkActive="grey">
-        <mat-icon class="icon" fontIcon="emoji_people"></mat-icon>
-        <span>Find a Supplier</span>
-      </div>
-      <div class="sidenav-element" routerLink="settings" routerLinkActive="grey">
-        <mat-icon class="icon" fontIcon="settings"></mat-icon>
-        <span>Settings</span>
-      </div>
-    </mat-drawer>
-  
-    <div class="sidenav">
-      <mat-toolbar color="primary">
-        <mat-toolbar-row class="mat-row">
-          <mat-icon class="menu" (click)="drawer.toggle()" fontIcon="menu"></mat-icon>
-          <span>To Kyiv with Love - До Києва з любов'ю</span>
-          <div>
-            <mat-icon class="icon" fontIcon="settings" routerLink="settings"></mat-icon>
-            <mat-icon class="icon" fontIcon="account_circle" routerLink="user"></mat-icon>
-          </div>
-        </mat-toolbar-row>
-      </mat-toolbar>
-  
-      <div class="router-wrapper">
-        <router-outlet></router-outlet>
-      </div>
-      
-  
+  <mat-drawer #drawer class="sidenav-open" mode="side" [opened]="true">
+    <div matTooltip="Log out" class="logo-wrapper" routerLink="" (click)="this.FirebaseService.signOut()">
+      <img src="assets/img/logokyiv.png" alt="">
     </div>
-  
-  </mat-drawer-container>
+
+    <div class="sidenav-element" routerLink="dash" routerLinkActive="grey">
+      <mat-icon class="icon" fontIcon="space_dashboard"></mat-icon>
+      <span>Dashboard</span>
+    </div>
+    <div class="sidenav-element" routerLink="user" routerLinkActive="grey">
+      <mat-icon class="icon" fontIcon="account_circle"></mat-icon>
+      <span>Account</span>
+    </div>
+    <div class="sidenav-element" routerLink="driver" routerLinkActive="grey">
+      <mat-icon class="icon" fontIcon="local_shipping"></mat-icon>
+      <span>Find a Driver</span>
+    </div>
+    <div class="sidenav-element" routerLink="supplier" routerLinkActive="grey">
+      <mat-icon class="icon" fontIcon="emoji_people"></mat-icon>
+      <span>Find a Supplier</span>
+    </div>
+    <div class="sidenav-element" routerLink="settings" routerLinkActive="grey">
+      <mat-icon class="icon" fontIcon="settings"></mat-icon>
+      <span>Settings</span>
+    </div>
+  </mat-drawer>
+
+  <div class="sidenav">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row class="mat-row">
+        <mat-icon class="menu" (click)="drawer.toggle()" fontIcon="menu"></mat-icon>
+        <span>To Kyiv with Love - До Києва з любов'ю</span>
+        <div>
+          <mat-icon class="icon" fontIcon="settings" routerLink="settings"></mat-icon>
+          <mat-icon class="icon" fontIcon="account_circle" [matMenuTriggerFor]="menu"></mat-icon>
+          <mat-menu #menu="matMenu">
+            <button routerLink="user" mat-menu-item>Account</button>
+            <button (click)="this.FirebaseService.signOut()" mat-menu-item>
+              Log Out
+              <mat-icon class="icon" fontIcon="logout"></mat-icon>
+            </button>
+          </mat-menu>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div class="router-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+
+
+  </div>
+
+</mat-drawer-container>

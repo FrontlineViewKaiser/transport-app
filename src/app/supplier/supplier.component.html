@@ -1,14 +1,13 @@
 <div class="wrapper">
     <mat-card  class="supplier-card" *ngFor="let supplier of suppliers">
         <mat-card-header class="header" (click)="openDialog(DetailDialogue)">
-          <mat-card-title>Woyczek</mat-card-title>
+          <mat-card-title>{{supplier.profile.name}}</mat-card-title>
         </mat-card-header>
         <img (click)="openDialog(DetailDialogue)" src="assets/img/1672319267903.jpg" alt="">
         <mat-card-content (click)="openDialog(DetailDialogue)">
-            <h3>Shipping from:</h3> Germany, Poland, Denmark
-            <h3>Shipping to:</h3> Kharkov, Dniepro, Kyiv, Lviv
-            <h3>Is Shipping:</h3> Arms, Humanitarian, Food
-            <h3>Vehicle:</h3> VW Sprinter
+          <h3>Needs Shipping from:</h3> <p *ngFor="let from of supplier.profile.from">{{ from }}</p>
+          <h3>Needs Shipping to:</h3> <p *ngFor="let to of supplier.profile.to">{{ to }}</p>
+          <h3>Shipping of:</h3> <p *ngFor="let good of supplier.profile.goods">{{ good }}</p>
         </mat-card-content>
         <mat-card-actions class="buttons">
             <button (click)="openDialog(ContactDialogue)">
