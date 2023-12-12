@@ -75,7 +75,7 @@ export class DashboardComponent {
     if (hour >= 17) {
       greeting = `Добрий вечір`; // Good evening
     } else if (hour >= 14) {
-      greeting = `Добрий день`; // Good afternoon
+      greeting = `Доброго дня`; // Good afternoon
     } else if (hour >= 11) {
       greeting = `Ласкаво просимо`; // Welcome
     } else if (hour >= 6) {
