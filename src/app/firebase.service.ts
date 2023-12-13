@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, getAuth, signOut } from '@angular/fire/auth';
+import { Auth, deleteUser, getAuth, signOut } from '@angular/fire/auth';
 import {
   Firestore,
   addDoc,
@@ -87,11 +87,14 @@ export class FirebaseService {
   }
 
   deleteUser() {
-    console.log(this.user)
-    this.user.delete().then(() => {
-      console.log('yay')
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    deleteUser(user).then(() => {
+     console.log('yay')
     }).catch((error) => {
       console.log('nay', error)
+      
     });
 }
   

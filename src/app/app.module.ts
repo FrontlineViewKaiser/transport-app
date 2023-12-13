@@ -28,6 +28,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ContactDialogueComponent } from './contact-dialogue/contact-dialogue.component';
 import { DetailDialogueComponent } from './detail-dialogue/detail-dialogue.component';
+import { EditDialogueComponent } from './edit-dialogue/edit-dialogue.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { DetailDialogueComponent } from './detail-dialogue/detail-dialogue.compo
     HomeComponent,
     LoginComponent,
     ContactDialogueComponent,
-    DetailDialogueComponent
+    DetailDialogueComponent,
+    EditDialogueComponent
   ],
   imports: [
     BrowserModule,

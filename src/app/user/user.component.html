@@ -1,15 +1,18 @@
-<h1>Your Profile
-    <mat-icon (click)="this.fireBaseService.deleteUser()" class="delete">delete_forever</mat-icon>
-</h1>
-
-
 <div class="user-card">
     <mat-card class="personal">
         <img src="assets/img/flag.jpg" class="banner">
-        <img [src]="(fireBaseService.currentUserSubject | async)?.img || 'assets/img/blank.png'"
-            class="profile-picture" [matMenuTriggerFor]="menu">
+        <img [src]="(fireBaseService.currentUserSubject | async)?.img || 'assets/img/blank.png'" class="profile-picture"
+            [matMenuTriggerFor]="menu" matTooltip="Change profile picture">
         <mat-menu #menu="matMenu">
-            <input type="file" (change)="this.uploadService.uploadFile(uploadInput)" #uploadInput>
+
+            <input type="file" id="file-input" (change)="this.uploadService.uploadFile(uploadInput)"
+                style="display: none;" #uploadInput />
+            <label for="file-input" class="upload-menu">
+                Choose File
+                <mat-icon>file_upload</mat-icon>
+            </label>
+
+
         </mat-menu>
         <h2 class="name">{{(fireBaseService.currentUserSubject | async)?.profile.name}}</h2>
         <div class="contact-wrapper">
@@ -23,18 +26,9 @@
             </mat-card-content>
         </div>
 
-
-
-        <div class="button-wrapper">
-            <button mat-fab extended color="primary">
-                <mat-icon>edit</mat-icon>
-                Edit
-            </button>
-        </div>
     </mat-card>
 
     <mat-card class="transport">
-
         <mat-card-content class="field">
             <h3>Shipping from:</h3>
             <p>{{(fireBaseService.currentUserSubject | async)?.profile.from}}</p>
@@ -51,83 +45,16 @@
             <h3>Vehicle:</h3>
             <p>{{(fireBaseService.currentUserSubject | async)?.profile.vehicle}}</p>
         </mat-card-content>
+
+    </mat-card>
+
+    <div class="bottom">
+        <mat-icon (click)="this.fireBaseService.deleteUser()" class="delete">delete_forever</mat-icon>
         <div class="button-wrapper">
-            <button mat-fab extended color="primary">
+            <button (click)="openDialog()" mat-fab extended color="primary">
                 <mat-icon>edit</mat-icon>
                 Edit
             </button>
         </div>
-    </mat-card>
-</div>
-<!--  
-
-
-        <mat-card-title>Personal Information</mat-card-title>
-        <mat-card-content>
-           
-        </mat-card-content>
-        <mat-card-content ></mat-card-content>
-        
-
-
-
-
-
-    <mat-card class="contact">
-        <mat-card-title>Contact Information</mat-card-title>
-
-        <mat-card-content class="field">
-            <h3>Email:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.email}}
-        </mat-card-content>
-        <div class="button-wrapper">
-            <button mat-fab extended color="primary">
-                <mat-icon>edit</mat-icon>
-                Edit
-              </button>
-        </div>
-    </mat-card>
-
-
-    <mat-card class="transport">
-        <mat-card-title>Transport Information</mat-card-title>
-        <mat-card-content class="field">
-            <h3>Shipping from:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.from}}
-        </mat-card-content>
-        <mat-card-content class="field">
-            <h3>Shipping to:</h3>{{(fireBaseService.currentUserSubject | async)?.profile.to}}
-        </mat-card-content>
-        <mat-card-content class="field">
-            <h3>Is Shipping:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.goods}}
-        </mat-card-content>
-        <mat-card-content class="field" *ngIf="(fireBaseService.currentUserSubject | async)?.driver">
-            <h3>Vehicle:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.vehicle}}
-        </mat-card-content>
-        <div class="button-wrapper">
-            <button mat-fab extended color="primary">
-                <mat-icon>edit</mat-icon>
-                Edit
-              </button>
-        </div>
-    </mat-card>
-</div>
-
-<div class="reviews">
-    <h2>Reviews</h2>
-    <div>
-        <mat-card class="review-card">
-            <mat-card-title>Taras says:</mat-card-title>
-            <mat-card-content class="field">Cooler Typ, aber sieht aus wie ein Salafist</mat-card-content>
-        </mat-card>
-
-        <mat-card class="review-card">
-            <mat-card-title>Taras says:</mat-card-title>
-            <mat-card-content class="field">Cooler Typ, aber sieht aus wie ein Salafist</mat-card-content>
-        </mat-card>
-
-        <mat-card class="review-card">
-            <mat-card-title>Taras says:</mat-card-title>
-            <mat-card-content class="field">Cooler Typ, aber sieht aus wie ein Salafist</mat-card-content>
-        </mat-card>
     </div>
-
--->
+</div>
