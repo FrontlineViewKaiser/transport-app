@@ -38,28 +38,14 @@ export class UploadService {
       const file = files.item(i);
       if (file) {
         const storageRef = ref(this.storage, file.name);
-        uploadBytesResumable(storageRef, file);
-        console.log(this.storage, file.name);
-        getDownloadURL(storageRef).then((url) => {
-          this.firebaseService.currentUser.img = url
-          this.firebaseService.updateCurrentUser();
-        })
-        
+        uploadBytesResumable(storageRef, file).then(() => {
+          console.log(this.storage, file.name);
+          getDownloadURL(storageRef).then((url) => {
+            this.firebaseService.currentUser.img = url;
+            this.firebaseService.updateCurrentUser();
+          });
+        });
       }
     }
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

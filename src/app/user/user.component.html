@@ -1,30 +1,81 @@
-<h1>Your Profile 
-    <mat-icon>delete_forever</mat-icon>
+<h1>Your Profile
+    <mat-icon (click)="this.fireBaseService.deleteUser()" class="delete">delete_forever</mat-icon>
 </h1>
+
 
 <div class="user-card">
     <mat-card class="personal">
-        <mat-card-title>Personal Information</mat-card-title>
-        <mat-card-content>
-            <img [src]="(fireBaseService.currentUserSubject | async)?.img || 'assets/img/blank.png'" alt="Profile Picture">
-        </mat-card-content>
-        <mat-card-content class="name">{{(fireBaseService.currentUserSubject | async)?.profile.name}}</mat-card-content>
-        <input type="file" (change)="this.uploadService.uploadFile(uploadInput)" #uploadInput>
+        <img src="assets/img/flag.jpg" class="banner">
+        <img [src]="(fireBaseService.currentUserSubject | async)?.img || 'assets/img/blank.png'"
+            class="profile-picture" [matMenuTriggerFor]="menu">
+        <mat-menu #menu="matMenu">
+            <input type="file" (change)="this.uploadService.uploadFile(uploadInput)" #uploadInput>
+        </mat-menu>
+        <h2 class="name">{{(fireBaseService.currentUserSubject | async)?.profile.name}}</h2>
+        <div class="contact-wrapper">
+            <mat-card-content class="field">
+                <h3>Tel:</h3>
+                <p>{{(fireBaseService.currentUserSubject | async)?.profile.tel}}</p>
+            </mat-card-content>
+            <mat-card-content class="field">
+                <h3>Email:</h3>
+                <p>{{(fireBaseService.currentUserSubject | async)?.profile.email}}</p>
+            </mat-card-content>
+        </div>
+
+
+
         <div class="button-wrapper">
             <button mat-fab extended color="primary">
                 <mat-icon>edit</mat-icon>
                 Edit
-              </button>
+            </button>
         </div>
     </mat-card>
-    
-<!--  -->
+
+    <mat-card class="transport">
+
+        <mat-card-content class="field">
+            <h3>Shipping from:</h3>
+            <p>{{(fireBaseService.currentUserSubject | async)?.profile.from}}</p>
+        </mat-card-content>
+        <mat-card-content class="field">
+            <h3>Shipping to:</h3>
+            <p>{{(fireBaseService.currentUserSubject | async)?.profile.to}}</p>
+        </mat-card-content>
+        <mat-card-content class="field">
+            <h3>Is Shipping:</h3>
+            <p>{{(fireBaseService.currentUserSubject | async)?.profile.goods}}</p>
+        </mat-card-content>
+        <mat-card-content class="field" *ngIf="(fireBaseService.currentUserSubject | async)?.driver">
+            <h3>Vehicle:</h3>
+            <p>{{(fireBaseService.currentUserSubject | async)?.profile.vehicle}}</p>
+        </mat-card-content>
+        <div class="button-wrapper">
+            <button mat-fab extended color="primary">
+                <mat-icon>edit</mat-icon>
+                Edit
+            </button>
+        </div>
+    </mat-card>
+</div>
+<!--  
+
+
+        <mat-card-title>Personal Information</mat-card-title>
+        <mat-card-content>
+           
+        </mat-card-content>
+        <mat-card-content ></mat-card-content>
+        
+
+
+
+
 
     <mat-card class="contact">
         <mat-card-title>Contact Information</mat-card-title>
-        <mat-card-content class="field">
-            <h3>Tel:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.tel}}
-        </mat-card-content>
+
         <mat-card-content class="field">
             <h3>Email:</h3> {{(fireBaseService.currentUserSubject | async)?.profile.email}}
         </mat-card-content>
@@ -79,4 +130,4 @@
         </mat-card>
     </div>
 
-</div>
+-->

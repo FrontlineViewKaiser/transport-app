@@ -3,8 +3,9 @@
   }
   
   .sidenav-open {
-    width: 25vw;
-    max-width: 300px;
+    width: 20vw;
+    min-width: 173px;
+    max-width: 230px;
   
     .logo-wrapper {
       height: 64px;
@@ -58,7 +59,12 @@
   
   .router-wrapper {
       padding: 10% 60px;
-      height: 85vh;
+      display: flex;
+      justify-content: center;
+  }
+
+  .userInterface {
+    width: 1000px;
   }
 
   .grey {

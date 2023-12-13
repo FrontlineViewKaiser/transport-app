@@ -21,6 +21,7 @@ export class FirebaseService {
   reviewsColl;
   currentUser;
   currentUserRef;
+  user;
 
   unsubUser() {};
   unsubCurrentUser() {};
@@ -36,6 +37,7 @@ export class FirebaseService {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         this.CurrentUserSubscription(user.uid);
+        this.user = user
       } else {
         console.log('no User')
         this.unsubUser();
@@ -83,5 +85,14 @@ export class FirebaseService {
     const auth = getAuth();
     signOut(auth).catch((error) => {});
   }
+
+  deleteUser() {
+    console.log(this.user)
+    this.user.delete().then(() => {
+      console.log('yay')
+    }).catch((error) => {
+      console.log('nay', error)
+    });
+}
   
 }
