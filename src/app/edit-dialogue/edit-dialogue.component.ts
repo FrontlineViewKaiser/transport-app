@@ -1,52 +1,57 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '../models/error-state-matcher';
 import { LoginServiceService } from '../login-service.service';
 import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-edit-dialogue',
   templateUrl: './edit-dialogue.component.html',
-  styleUrls: ['./edit-dialogue.component.scss']
+  styleUrls: ['./edit-dialogue.component.scss'],
 })
 export class EditDialogueComponent {
+  currentUserSubscription;
+  driverStatus;
 
-  currentUserSubscription
+  constructor(
+    public loginService: LoginServiceService,
+    public firebaseService: FirebaseService
+  ) {
+    this.currentUserSubscription =
+      this.firebaseService.currentUserSubject.subscribe((user) => {
+        if (user) {
+          this.loginService.nameFormControl.setValue(user.profile.name);
+          this.loginService.emailFormControl.setValue(user.profile.email);
+          this.loginService.phoneFormControl.setValue(user.profile.tel);
+          this.loginService.locationsUAFormControl.setValue(user.profile.to);
+          this.loginService.locationsEUFormControl.setValue(user.profile.from);
+          this.loginService.vehicleFormControl.setValue(user.profile.vehicle);
+          this.loginService.goodsFormControl.setValue(user.profile.goods);
 
-  name
-  phone
-  email
-  locationsEU
-  locationsUA
-  vehicle
-  goods
-  
+          this.driverStatus = user.driver;
+        }
+      });
+  }
 
-  constructor(public loginService: LoginServiceService, public firebaseService: FirebaseService) {
-    this.currentUserSubscription = this.firebaseService.currentUserSubject.subscribe(user => {
-      if (user) {
-        this.name = user.profile.name;
-        this.email = user.profile.email;
-        this.phone = user.profile.tel;
-        this.locationsEU = user.profile.from
-        this.locationsUA = user.profile.to
-        this.vehicle = user.profile.vehicle
-        this.goods = user.profile.goods
-      }
-    });
-    console.log(
-      this.name,
-      this.email,
-      this.phone,
-      this.locationsEU,
-      this.locationsUA,   
-      this.vehicle,
-      this.goods,
-    )
+  editProfile() {
+    let email = this.loginService.emailFormControl.value;
+    this.compileChanges();
+    this.loginService.updateEmail(email);
+  }
+
+  compileChanges() {
+    let profile = this.firebaseService.currentUser.profile;
+    profile.name = this.loginService.nameFormControl.value;
+    profile.email = this.loginService.emailFormControl.value;
+    profile.tel = this.loginService.phoneFormControl.value;
+    profile.to = this.loginService.locationsUAFormControl.value;
+    profile.from = this.loginService.locationsEUFormControl.value;
+    profile.vehicle = this.loginService.vehicleFormControl.value;
+    profile.goods = this.loginService.goodsFormControl.value;
+    this.firebaseService.currentUser.driver = this.driverStatus;
+
+    console.log(this.firebaseService.currentUser.driver);
   }
 
   ngOnDestroy() {
     this.currentUserSubscription.unsubscribe();
   }
-
 }

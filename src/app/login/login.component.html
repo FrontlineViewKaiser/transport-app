@@ -34,7 +34,7 @@
                         <mat-form-field class="example-full-width">
                             <mat-label>Email</mat-label>
                             <input type="email" matInput [formControl]="loginService.emailFormControl" [errorStateMatcher]="loginService.matcher"
-                                placeholder="Ex. pat@example.com">
+                                placeholder="Ex.pat@example.com">
                             <mat-error
                                 *ngIf="loginService.emailFormControl.hasError('email') && !loginService.emailFormControl.hasError('required')">
                                 Please enter a valid email address

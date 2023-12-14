@@ -1,0 +1,105 @@
+.content {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.signup-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+
+  form {
+    margin: 16px 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 48px;
+    span {
+      color: rgb(161, 161, 161);
+    }
+  }
+}
+
+.choice-field {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 64px;
+
+  .mat-divider {
+    height: 1px;
+    width: 100%;
+    background-color: rgb(63, 81, 181);
+  }
+
+  .choice-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  button {
+    height: 46px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  position: relative;
+  gap: 12px;
+  width: 100%;
+  border: solid 1px grey;
+  padding: 24px 8px 8px 8px;
+  border-radius: 12px;
+  box-shadow: 0 0 3px 2px lightgrey;
+
+  h2 {
+    position: absolute;
+    top: -18px;
+    left: 8px;
+    z-index: 1;
+    background-color: white;
+  }
+
+  .container {
+    align-items: center;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap-reverse;
+    gap: 12px;
+  }
+
+  .bottom-container {
+    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      width: 100%;
+      max-width: 212px;
+      height: 56px;
+      margin-bottom: 22px;
+    }
+  }
+}
+
+.headline {
+  font-weight: 600;
+  font-size: 48px;
+}
+
+@media (max-width: 635px) {
+  .bottom-container {
+    flex-wrap: wrap-reverse;
+    gap: 12px;
+  }
+
+  .container {
+    justify-content: center;
+  }
+}

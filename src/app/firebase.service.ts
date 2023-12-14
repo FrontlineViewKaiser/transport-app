@@ -23,10 +23,12 @@ export class FirebaseService {
   currentUserRef;
   user;
 
+
   unsubUser() {};
   unsubCurrentUser() {};
   currentUsersubscription;
   public currentUserSubject = new BehaviorSubject<any>(null);
+  public authSubject = new BehaviorSubject<any>(null);
 
   constructor(
     public firestore: Firestore,
@@ -38,6 +40,7 @@ export class FirebaseService {
       if (user) {
         this.CurrentUserSubscription(user.uid);
         this.user = user
+        this.authSubject.next(user);
       } else {
         console.log('no User')
         this.unsubUser();

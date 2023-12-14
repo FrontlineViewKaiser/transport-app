@@ -1,7 +1,18 @@
 <div class="user-card">
+    <mat-card class="warning" *ngIf="!(fireBaseService.authSubject | async)?.emailVerified && (fireBaseService.authSubject | async)?.emailVerified != undefined">
+        <mat-card-content>
+            <p>Your email is not verified. To have access to all functions you need to click the link in the
+                verification email.</p>
+            <div>
+                Didn't get an email?
+                <button mat-raised-button mat-dialog-close>Resend</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <!---->
     <mat-card class="personal">
         <img src="assets/img/flag.jpg" class="banner">
-        <img [src]="(fireBaseService.currentUserSubject | async)?.img || 'assets/img/blank.png'" class="profile-picture"
+        <img [src]="(fireBaseService.currentUserSubject | async)?.img" class="profile-picture"
             [matMenuTriggerFor]="menu" matTooltip="Change profile picture">
         <mat-menu #menu="matMenu">
 

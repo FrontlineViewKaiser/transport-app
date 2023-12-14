@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from './models/error-state-matcher';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from '@angular/fire/auth';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  updateEmail,
+} from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { FirebaseService } from './firebase.service';
 import { doc, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginServiceService {
-
   constructor(
     private FirebaseService: FirebaseService,
     private router: Router
-  ) { }
+  ) {}
 
   signUp: boolean = false;
   driver: boolean = false;
@@ -174,7 +179,6 @@ export class LoginServiceService {
         vehicle: this.vehicleFormControl.value,
         goods: this.goodsFormControl.value,
         reviews: [],
-        img: ''
       };
     } else if (this.supplier) {
       return {
@@ -185,7 +189,6 @@ export class LoginServiceService {
         to: this.locationsUAFormControl.value,
         goods: this.goodsFormControl.value,
         reviews: [],
-        img: ''
       };
     } else {
       return null;
@@ -201,7 +204,6 @@ export class LoginServiceService {
   }
 
   async createAuthentication() {
-    debugger;
     let email = this.emailFormControl.value;
     let password = this.passwordFormControl.value;
     const auth = getAuth();
@@ -211,6 +213,7 @@ export class LoginServiceService {
         console.log(user);
         this.postUserProfile(user.uid);
         this.firebaseSignIn(auth, email, password);
+        sendEmailVerification(auth.currentUser)
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -258,6 +261,19 @@ export class LoginServiceService {
       color: this.getColor(this.nameFormControl.value),
       id: uid,
       driver: this.driver,
+      img: 'assets/img/blank.png'
     };
+  }
+
+  updateEmail(email) {
+    const auth = getAuth();
+    updateEmail(auth.currentUser, email)
+      .then(() => {
+        console.log('User Email has been changed to:', email)
+        this.FirebaseService.updateCurrentUser();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }

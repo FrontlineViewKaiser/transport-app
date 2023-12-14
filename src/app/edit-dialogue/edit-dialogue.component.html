@@ -1,15 +1,14 @@
-<h2 mat-dialog-title>Install Angular</h2>
-<mat-dialog-content class="mat-typography">
+<h2 mat-dialog-title>Edit Profile</h2>
+<mat-dialog-content class="mat-typography content scroll">
     <div class="signUp">
         <div class="signup-container">
-            <h1 class="headline">Sign Up</h1>
-            <form class="example-form">
+            <form>
                 <div class="wrapper">
                     <h2>Personal Information</h2>
-                    <div>
+                    <div class="container">
                         <mat-form-field class="example-full-width">
                             <mat-label>Name</mat-label>
-                            <input type="text" matInput [formControl]="loginService.nameFormControl" [(ngModel)]="name">
+                            <input type="text" matInput [formControl]="loginService.nameFormControl">
                             <mat-error *ngIf="loginService.nameFormControl.hasError('required')">
                                 Name is <strong>required</strong>
                             </mat-error>
@@ -17,8 +16,8 @@
 
                         <mat-form-field class="example-full-width">
                             <mat-label>Email</mat-label>
-                            <input type="email" matInput [formControl]="loginService.emailFormControl" [errorStateMatcher]="loginService.matcher"
-                                placeholder="Ex. pat@example.com" [(ngModel)]="email">
+                            <input type="email" matInput [formControl]="loginService.emailFormControl"
+                                [errorStateMatcher]="loginService.matcher" placeholder="Ex. pat@example.com">
                             <mat-error
                                 *ngIf="loginService.emailFormControl.hasError('email') && !loginService.emailFormControl.hasError('required')">
                                 Please enter a valid email address
@@ -30,7 +29,7 @@
 
                         <mat-form-field class="example-full-width">
                             <mat-label>Telephone</mat-label>
-                            <input type="tel" matInput [formControl]="loginService.phoneFormControl" [(ngModel)]="phone">
+                            <input type="tel" matInput [formControl]="loginService.phoneFormControl">
                             <mat-error *ngIf="loginService.phoneFormControl.hasError('required')">
                                 Phonenumber is <strong>required</strong>
                             </mat-error>
@@ -41,11 +40,12 @@
                 <div>
                     <div class="wrapper">
                         <h2>Business</h2>
-                        <div>
+                        <div class="container">
                             <mat-form-field>
                                 <mat-label>Shipping from</mat-label>
-                                <mat-select [formControl]="loginService.locationsEUFormControl" multiple [(ngModel)]="locationsEU">
-                                    <mat-option *ngFor="let location of loginService.locationsEU" [value]="location">{{ location
+                                <mat-select [formControl]="loginService.locationsEUFormControl" multiple>
+                                    <mat-option *ngFor="let location of loginService.locationsEU" [value]="location">{{
+                                        location
                                         }}</mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
@@ -55,8 +55,9 @@
 
                             <mat-form-field>
                                 <mat-label>Shipping to</mat-label>
-                                <mat-select [formControl]="loginService.locationsUAFormControl" multiple [(ngModel)]="locationsUA">
-                                    <mat-option *ngFor="let location of loginService.locationsUA" [value]="location">{{ location
+                                <mat-select [formControl]="loginService.locationsUAFormControl" multiple>
+                                    <mat-option *ngFor="let location of loginService.locationsUA" [value]="location">{{
+                                        location
                                         }} </mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
@@ -66,8 +67,9 @@
 
                             <mat-form-field *ngIf="(firebaseService.currentUserSubject | async).driver">
                                 <mat-label>Vehicle</mat-label>
-                                <mat-select [formControl]="loginService.vehicleFormControl" multiple [(ngModel)]="vehicle">
-                                    <mat-option *ngFor="let vehicle of loginService.vehicles" [value]="vehicle">{{ vehicle
+                                <mat-select [formControl]="loginService.vehicleFormControl" multiple>
+                                    <mat-option *ngFor="let vehicle of loginService.vehicles" [value]="vehicle">{{
+                                        vehicle
                                         }}</mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
@@ -77,8 +79,9 @@
 
                             <mat-form-field>
                                 <mat-label>Goods</mat-label>
-                                <mat-select [formControl]="loginService.goodsFormControl" multiple [(ngModel)]="goods">
-                                    <mat-option *ngFor="let good of loginService.goods" [value]="good">{{ good }}</mat-option>
+                                <mat-select [formControl]="loginService.goodsFormControl" multiple>
+                                    <mat-option *ngFor="let good of loginService.goods" [value]="good">{{ good
+                                        }}</mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
                                     Goods are <strong>required</strong>
@@ -90,10 +93,25 @@
                     <span>*required fields</span>
                 </div>
             </form>
+
+            <div class="wrapper">
+                <h2>Change Account</h2>
+                <div class="bottom-container">
+                    <mat-form-field>
+                        <mat-label>Change Status</mat-label>
+                        <mat-select [(ngModel)]="driverStatus" #driver>
+                            <mat-option [value]="true">Driver</mat-option>
+                            <mat-option [value]="false">Supplier</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <button mat-raised-button mat-dialog-close>change password</button>
+                </div>
+            </div>
         </div>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary">Save Edit</button>
+    <button mat-raised-button color="primary" (click)="editProfile()">Save Edit</button>
 </mat-dialog-actions>

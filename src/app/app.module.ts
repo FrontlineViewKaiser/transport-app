@@ -29,6 +29,7 @@ import { LoginComponent } from './login/login.component';
 import { ContactDialogueComponent } from './contact-dialogue/contact-dialogue.component';
 import { DetailDialogueComponent } from './detail-dialogue/detail-dialogue.component';
 import { EditDialogueComponent } from './edit-dialogue/edit-dialogue.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { EditDialogueComponent } from './edit-dialogue/edit-dialogue.component';
     MatSelectModule,
     MatTooltipModule,
     MatMenuModule,
+    FormsModule,
     provideFirebaseApp(() => initializeApp({"projectId":"transport-app-c7031","appId":"1:679604706859:web:90e4b48a06c49b16a4d46e","storageBucket":"transport-app-c7031.appspot.com","apiKey":"AIzaSyDG9Plb8d3xAbedz1ZkCtwBiV6OLBKlnmI","authDomain":"transport-app-c7031.firebaseapp.com","messagingSenderId":"679604706859"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
