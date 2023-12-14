@@ -168,6 +168,8 @@ export class LoginServiceService {
   goodsFormControl = new FormControl('', Validators.required);
   matcher = new ErrorStateMatcher();
 
+  auth = getAuth();
+
   compileProfile() {
     if (this.driver) {
       return {
@@ -195,25 +197,16 @@ export class LoginServiceService {
     }
   }
 
-  getColor(name) {
-    const sum = name
-      .split('')
-      .reduce((sum, char) => sum + char.charCodeAt(0), 0);
-    const colorIndex = sum % this.colors.length;
-    return this.colors[colorIndex];
-  }
-
   async createAuthentication() {
     let email = this.emailFormControl.value;
     let password = this.passwordFormControl.value;
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
         this.postUserProfile(user.uid);
-        this.firebaseSignIn(auth, email, password);
-        sendEmailVerification(auth.currentUser)
+        this.firebaseSignIn(email, password);
+        sendEmailVerification(this.auth.currentUser)
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -225,12 +218,12 @@ export class LoginServiceService {
   async logIn() {
     let email = this.loginEmailFormControl.value;
     let password = this.loginPasswordFormControl.value;
-    const auth = getAuth();
-    this.firebaseSignIn(auth, email, password);
+
+    this.firebaseSignIn( email, password);
   }
 
-  firebaseSignIn(auth, email, password) {
-    signInWithEmailAndPassword(auth, email, password)
+  firebaseSignIn( email, password) {
+    signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         this.router.navigate(['/home/dash']);
@@ -258,7 +251,6 @@ export class LoginServiceService {
     return {
       profile: this.compileProfile(),
       favorites: [],
-      color: this.getColor(this.nameFormControl.value),
       id: uid,
       driver: this.driver,
       img: 'assets/img/blank.png'
@@ -266,11 +258,11 @@ export class LoginServiceService {
   }
 
   updateEmail(email) {
-    const auth = getAuth();
-    updateEmail(auth.currentUser, email)
+    updateEmail(this.auth.currentUser, email)
       .then(() => {
         console.log('User Email has been changed to:', email)
         this.FirebaseService.updateCurrentUser();
+        sendEmailVerification(this.auth.currentUser)
       })
       .catch((error) => {
         console.log(error);

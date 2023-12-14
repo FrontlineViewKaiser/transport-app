@@ -1,11 +1,11 @@
 <div class="user-card">
-    <mat-card class="warning" *ngIf="!(fireBaseService.authSubject | async)?.emailVerified && (fireBaseService.authSubject | async)?.emailVerified != undefined">
+    <mat-card class="warning" *ngIf="!userVerified">
         <mat-card-content>
             <p>Your email is not verified. To have access to all functions you need to click the link in the
                 verification email.</p>
             <div>
                 Didn't get an email?
-                <button mat-raised-button mat-dialog-close>Resend</button>
+                <button mat-raised-button (click)="resendEmailVerification()">Resend</button>
             </div>
         </mat-card-content>
     </mat-card>

@@ -33,8 +33,13 @@ export class EditDialogueComponent {
 
   editProfile() {
     let email = this.loginService.emailFormControl.value;
-    this.compileChanges();
-    this.loginService.updateEmail(email);
+    if (email != this.firebaseService.currentUser.profile.email) {
+      this.compileChanges();
+      this.loginService.updateEmail(email);
+    } else {
+      this.compileChanges();
+      this.firebaseService.updateCurrentUser();
+    }
   }
 
   compileChanges() {
