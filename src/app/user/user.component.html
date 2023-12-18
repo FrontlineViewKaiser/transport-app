@@ -9,7 +9,7 @@
             </div>
         </mat-card-content>
     </mat-card>
-    <!---->
+    <!-- -->
     <mat-card class="personal">
         <img src="assets/img/flag.jpg" class="banner">
         <img [src]="(fireBaseService.currentUserSubject | async)?.img" class="profile-picture"

@@ -21,7 +21,6 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { UserComponent } from './user/user.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SettingsComponent } from './settings/settings.component';
 import { DriverComponent } from './driver/driver.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { HomeComponent } from './home/home.component';
@@ -37,7 +36,6 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     UserComponent,
     DashboardComponent,
-    SettingsComponent,
     DriverComponent,
     SupplierComponent,
     HomeComponent,

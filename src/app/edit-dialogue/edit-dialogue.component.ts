@@ -25,7 +25,6 @@ export class EditDialogueComponent {
           this.loginService.locationsEUFormControl.setValue(user.profile.from);
           this.loginService.vehicleFormControl.setValue(user.profile.vehicle);
           this.loginService.goodsFormControl.setValue(user.profile.goods);
-
           this.driverStatus = user.driver;
         }
       });
