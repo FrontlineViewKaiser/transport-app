@@ -19,5 +19,7 @@ import { LoginServiceService } from '../login-service.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+ 
+
   constructor(public loginService: LoginServiceService) {}
 }

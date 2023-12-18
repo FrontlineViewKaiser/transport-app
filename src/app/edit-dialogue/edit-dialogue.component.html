@@ -105,13 +105,28 @@
                         </mat-select>
                     </mat-form-field>
 
-                    <button mat-raised-button mat-dialog-close>change password</button>
+                    <div class="notification" *ngIf="loginService.changePasswordSuccess">Your password has been changed</div>
+                    <div class="notification" style="color: red" *ngIf="loginService.passwordError">Password change not possible</div>
+
+                    <button *ngIf="!loginService.changePassword" mat-raised-button (click)="loginService.changePassword = true">change password</button>
+                    <mat-form-field *ngIf="loginService.changePassword" class="example-full-width">
+                        <mat-label>Password</mat-label>
+                        <input type="text" matInput [formControl]="loginService.passwordFormControl">
+                        <mat-error *ngIf="loginService.passwordFormControl.hasError('required')">
+                            Password is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="loginService.passwordFormControl.hasError('minlength')">
+                            Password must be at least <strong>6 characters long</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <button *ngIf="loginService.changePassword" mat-raised-button (click)="loginService.updatePassword()">Set new password</button>
                 </div>
             </div>
         </div>
     </div>
+    
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button mat-dialog-close (click)="loginService.changePassword = false">Cancel</button>
     <button mat-raised-button color="primary" (click)="editProfile()">Save Edit</button>
 </mat-dialog-actions>

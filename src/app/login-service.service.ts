@@ -5,8 +5,10 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   updateEmail,
+  updatePassword,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { FirebaseService } from './firebase.service';
@@ -20,10 +22,6 @@ export class LoginServiceService {
     private FirebaseService: FirebaseService,
     private router: Router
   ) {}
-
-  signUp: boolean = false;
-  driver: boolean = false;
-  supplier: boolean = false;
 
   locationsEU = [
     'All of Europe',
@@ -151,6 +149,11 @@ export class LoginServiceService {
     Validators.minLength(6),
   ]);
 
+  resetEmailFormControl = new FormControl('', [
+    Validators.required,
+    Validators.email,
+  ]);
+
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -169,6 +172,16 @@ export class LoginServiceService {
   matcher = new ErrorStateMatcher();
 
   auth = getAuth();
+  passwordRecovery: boolean;
+  signUp: boolean = false;
+  driver: boolean = false;
+  supplier: boolean = false;
+  loginError: boolean = false;
+  resetError: boolean = false;
+  resetSuccess: boolean = false;
+  changePassword: boolean = false;
+  passwordError: boolean = false;
+  changePasswordSuccess: boolean = false;
 
   compileProfile() {
     if (this.driver) {
@@ -206,7 +219,7 @@ export class LoginServiceService {
         console.log(user);
         this.postUserProfile(user.uid);
         this.firebaseSignIn(email, password);
-        sendEmailVerification(this.auth.currentUser)
+        sendEmailVerification(this.auth.currentUser);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -219,19 +232,21 @@ export class LoginServiceService {
     let email = this.loginEmailFormControl.value;
     let password = this.loginPasswordFormControl.value;
 
-    this.firebaseSignIn( email, password);
+    this.firebaseSignIn(email, password);
   }
 
-  firebaseSignIn( email, password) {
+  firebaseSignIn(email, password) {
     signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         this.router.navigate(['/home/dash']);
+        this.loginError = false;
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+        this.loginError = true;
       });
   }
 
@@ -253,19 +268,52 @@ export class LoginServiceService {
       favorites: [],
       id: uid,
       driver: this.driver,
-      img: 'assets/img/blank.png'
+      img: 'assets/img/blank.png',
     };
   }
 
   updateEmail(email) {
     updateEmail(this.auth.currentUser, email)
       .then(() => {
-        console.log('User Email has been changed to:', email)
+        console.log('User Email has been changed to:', email);
         this.FirebaseService.updateCurrentUser();
-        sendEmailVerification(this.auth.currentUser)
+        sendEmailVerification(this.auth.currentUser);
       })
       .catch((error) => {
         console.log(error);
+      });
+  }
+
+  sendRecoveryMail() {
+    let email = this.resetEmailFormControl.value;
+    sendPasswordResetEmail(this.auth, email)
+      .then(() => {
+        this.passwordRecovery = false;
+        this.resetSuccess = true;
+        setTimeout(() => {
+          this.resetSuccess = false;
+        }, 2000);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        this.resetError = true;
+      });
+  }
+
+  updatePassword() {
+    const newPassword = this.passwordFormControl.value;
+
+    updatePassword(this.auth.currentUser, newPassword)
+      .then(() => {
+        this.changePassword = false;
+        this.changePasswordSuccess = true
+        setTimeout(() => {
+          this.changePasswordSuccess = false
+        }, 2000);
+      })
+      .catch((error) => {
+        this.passwordError = true;
       });
   }
 }

@@ -1,18 +1,19 @@
 <div class="searchbar">
-  <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="filterSelect = !filterSelect">
+  <button mat-fab color="primary" aria-label="Example icon button with a delete icon"
+    (click)="filterSelect = !filterSelect">
     <mat-icon *ngIf="!filterSelect">filter_alt</mat-icon>
     <mat-icon *ngIf="filterSelect">filter_alt_off</mat-icon>
   </button>
-  
 
-  <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (keyup)="search()">
+
+  <input type="text" placeholder="Search..." [(ngModel)]="this.displayService.searchQuery" (keyup)="this.displayService.search('supplier')">
 </div>
 
 
 <div class="filters" *ngIf="filterSelect">
   <mat-form-field>
     <mat-label>Shipping from</mat-label>
-    <mat-select multiple [(ngModel)]="selectedLocationFrom" (selectionChange)="filterSuppliers()">
+    <mat-select multiple [(ngModel)]="this.displayService.selectedLocationFrom" (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let location of loginService.locationsEU" [value]="location">{{
         location
         }}</mat-option>
@@ -20,41 +21,36 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Shipping to</mat-label>
-    <mat-select multiple [(ngModel)]="selectedLocationTo" (selectionChange)="filterSuppliers()">
+    <mat-select multiple [(ngModel)]="this.displayService.selectedLocationTo" (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let location of loginService.locationsUA" [value]="location">{{
         location
         }}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <!-- <mat-form-field>
-    <mat-label>Shipping from</mat-label>
-    <mat-select multiple [(ngModel)]="selectedVehicles" (selectionChange)="filterSuppliers()">
-      <mat-option *ngFor="let vehicle of loginService.vehicles" [value]="vehicle">{{
-        vehicle
-        }}</mat-option>
-    </mat-select>
-  </mat-form-field> -->
-
   <mat-form-field>
     <mat-label>Shipping from</mat-label>
-    <mat-select multiple [(ngModel)]="selectedGoods" (selectionChange)="filterSuppliers()">
+    <mat-select multiple [(ngModel)]="this.displayService.selectedGoods" (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let goods of loginService.goods" [value]="goods">{{
         goods
         }}</mat-option>
     </mat-select>
-
   </mat-form-field>
+  <mat-button-toggle-group appearance="legacy">
+    <mat-button-toggle class="toggle-button" (click)="this.displayService.filterForFavorites();">Favorites</mat-button-toggle>
+  </mat-button-toggle-group>
+
+
 </div>
 
 
 <div class="wrapper">
-  <mat-card class="supplier-card" *ngFor="let supplier of suppliers">
-    <mat-card-header class="header" (click)="openDialog(DetailDialogue)">
+  <mat-card class="supplier-card" *ngFor="let supplier of this.displayService.suppliers">
+    <mat-card-header class="header" (click)="this.displayService.openDialog(DetailDialogue, supplier)">
       <mat-card-title>{{supplier.profile.name}}</mat-card-title>
     </mat-card-header>
-    <img (click)="openDialog(DetailDialogue)" src="assets/img/1672319267903.jpg" alt="">
-    <mat-card-content (click)="openDialog(DetailDialogue)">
+    <img (click)="this.displayService.openDialog(DetailDialogue, supplier)" src="assets/img/1672319267903.jpg" alt="">
+    <mat-card-content (click)="this.displayService.openDialog(DetailDialogue, supplier)">
       <h3>Needs Shipping from:</h3>
       <p *ngFor="let from of supplier.profile.from">{{ from }}</p>
       <h3>Needs Shipping to:</h3>
@@ -63,11 +59,12 @@
       <p *ngFor="let good of supplier.profile.goods">{{ good }}</p>
     </mat-card-content>
     <mat-card-actions class="buttons">
-      <button (click)="openDialog(ContactDialogue)">
+      <button (click)="this.displayService.openDialog(ContactDialogue, supplier)">
         <mat-icon>call</mat-icon>
       </button>
-      <button>
-        <mat-icon>stars</mat-icon>
+      <button (click)="this.displayService.toggleFavorite(supplier.id)">
+        <mat-icon *ngIf="!this.displayService.favorite(supplier.id)">stars</mat-icon>
+        <mat-icon *ngIf="this.displayService.favorite(supplier.id)" style="color: gold;">stars</mat-icon>
       </button>
     </mat-card-actions>
   </mat-card>

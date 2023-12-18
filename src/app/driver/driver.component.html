@@ -6,14 +6,15 @@
   </button>
 
 
-  <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (keyup)="search()">
+  <input type="text" placeholder="Search..." [(ngModel)]="this.displayService.searchQuery" (keyup)="this.displayService.search('driver')">
 </div>
 
 
 <div class="filters" *ngIf="filterSelect">
   <mat-form-field>
     <mat-label>Shipping from</mat-label>
-    <mat-select multiple [(ngModel)]="selectedLocationFrom" (selectionChange)="filterSuppliers()">
+    <mat-select multiple [(ngModel)]="this.displayService.selectedLocationFrom"
+      (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let location of loginService.locationsEU" [value]="location">{{
         location
         }}</mat-option>
@@ -21,7 +22,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Shipping to</mat-label>
-    <mat-select multiple [(ngModel)]="selectedLocationTo" (selectionChange)="filterSuppliers()">
+    <mat-select multiple [(ngModel)]="this.displayService.selectedLocationTo" (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let location of loginService.locationsUA" [value]="location">{{
         location
         }}</mat-option>
@@ -30,7 +31,7 @@
 
   <mat-form-field>
     <mat-label>Shipping from</mat-label>
-    <mat-select multiple [(ngModel)]="selectedVehicles" (selectionChange)="filterSuppliers()">
+    <mat-select multiple [(ngModel)]="this.displayService.selectedVehicles" (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let vehicle of loginService.vehicles" [value]="vehicle">{{
         vehicle
         }}</mat-option>
@@ -39,24 +40,29 @@
 
   <mat-form-field>
     <mat-label>Shipping from</mat-label>
-    <mat-select multiple [(ngModel)]="selectedGoods" (selectionChange)="filterSuppliers()">
+    <mat-select multiple [(ngModel)]="this.displayService.selectedGoods" (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let goods of loginService.goods" [value]="goods">{{
         goods
         }}</mat-option>
     </mat-select>
-
   </mat-form-field>
+
+  <mat-button-toggle-group appearance="legacy">
+    <mat-button-toggle class="toggle-button"
+      (click)="this.displayService.filterForFavorites();">Favorites</mat-button-toggle>
+  </mat-button-toggle-group>
+
 </div>
 
 
 
 <div class="wrapper">
-  <mat-card class="driver-card" *ngFor="let driver of drivers, let index = index">
-    <mat-card-header class="header" (click)="openDialog(DetailDialogue, driver)">
+  <mat-card class="driver-card" *ngFor="let driver of this.displayService.drivers, let index = index">
+    <mat-card-header class="header" (click)="this.displayService.openDialog(DetailDialogue, driver)">
       <mat-card-title>{{driver.profile.name}}</mat-card-title>
     </mat-card-header>
-    <img (click)="openDialog(DetailDialogue, driver)" src="assets/img/1672319267903.jpg" alt="">
-    <mat-card-content (click)="openDialog(DetailDialogue, driver)">
+    <img (click)="this.displayService.openDialog(DetailDialogue, driver)" src="assets/img/1672319267903.jpg" alt="">
+    <mat-card-content (click)="this.displayService.openDialog(DetailDialogue, driver)">
       <h3>Shipping from:</h3>
       <p *ngFor="let location of driver.profile.from">{{ location }}</p>
       <h3>Shipping to:</h3>
@@ -67,12 +73,12 @@
       <p *ngFor="let vehicle of driver.profile.vehicle">{{ vehicle }}</p>
     </mat-card-content>
     <mat-card-actions class="buttons">
-      <button (click)="openDialog(ContactDialogue, driver)">
+      <button (click)="this.displayService.openDialog(ContactDialogue, driver)">
         <mat-icon>call</mat-icon>
       </button>
-      <button (click)="toggleFavorite(driver.id)">
-        <mat-icon *ngIf="!favorite(driver.id)">stars</mat-icon>
-        <mat-icon *ngIf="favorite(driver.id)" style="color: gold;">stars</mat-icon>
+      <button (click)="this.displayService.toggleFavorite(driver.id)">
+        <mat-icon *ngIf="!this.displayService.favorite(driver.id)">stars</mat-icon>
+        <mat-icon *ngIf="this.displayService.favorite(driver.id)" style="color: gold;">stars</mat-icon>
       </button>
     </mat-card-actions>
   </mat-card>

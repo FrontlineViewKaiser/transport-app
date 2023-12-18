@@ -28,6 +28,7 @@ export class EditDialogueComponent {
           this.driverStatus = user.driver;
         }
       });
+      
   }
 
   editProfile() {
@@ -39,6 +40,7 @@ export class EditDialogueComponent {
       this.compileChanges();
       this.firebaseService.updateCurrentUser();
     }
+    this.loginService.changePassword = false
   }
 
   compileChanges() {
@@ -57,5 +59,13 @@ export class EditDialogueComponent {
 
   ngOnDestroy() {
     this.currentUserSubscription.unsubscribe();
+
+    this.loginService.nameFormControl.reset('');
+    this.loginService.emailFormControl.reset('');
+    this.loginService.phoneFormControl.reset('')
+    this.loginService.locationsUAFormControl.reset('')
+    this.loginService.locationsEUFormControl.reset('')
+    this.loginService.vehicleFormControl.reset('')
+    this.loginService.goodsFormControl.reset('')
   }
 }

@@ -20,10 +20,6 @@
       <mat-icon class="icon" fontIcon="emoji_people"></mat-icon>
       <span>Find a Supplier</span>
     </div>
-    <div class="sidenav-element" routerLink="settings" routerLinkActive="grey">
-      <mat-icon class="icon" fontIcon="settings"></mat-icon>
-      <span>Settings</span>
-    </div>
   </mat-drawer>
 
   <div class="sidenav">
@@ -32,7 +28,6 @@
         <mat-icon class="menu" (click)="drawer.toggle()" fontIcon="menu"></mat-icon>
         <span>To Kyiv with Love - До Києва з любов'ю</span>
         <div>
-          <mat-icon class="icon" fontIcon="settings" routerLink="settings"></mat-icon>
           <mat-icon class="icon" fontIcon="account_circle" [matMenuTriggerFor]="menu"></mat-icon>
           <mat-menu #menu="matMenu">
             <button routerLink="user" mat-menu-item>Account</button>

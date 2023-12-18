@@ -1,8 +1,9 @@
 section {
   width: 100%;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
   padding: 8% 0;
 }
 
@@ -141,5 +142,28 @@ section {
   .headline {
     font-weight: 600;
     font-size: 48px;
+  }
+}
+
+.notification {
+  position: absolute;
+  top: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 0px 0px 14px 3px #00000040;
+  padding: 24px 48px;
+  border-radius: 20px;
+  animation: fade-in-out 2s ease;
+  background-color: white;
+}
+
+@keyframes fade-in-out {
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 90% {
+    opacity: 1;
   }
 }

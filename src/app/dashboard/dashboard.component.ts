@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../firebase.service';
+import { DriverComponent } from '../driver/driver.component';
+import { SupplierComponent } from '../supplier/supplier.component';
+import { DisplayService } from '../display.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +16,7 @@ export class DashboardComponent {
   drivers = [];
   suppliers = [];
 
-  constructor(private router: Router, public FirebaseService: FirebaseService) {
+  constructor(private router: Router, public FirebaseService: FirebaseService, public displayService: DisplayService) {
     this.subscription = this.FirebaseService.UserSubscription().subscribe(
       (users) => {
         this.suppliers = (users as any[]).filter(
@@ -51,8 +54,12 @@ export class DashboardComponent {
     const currentUser = this.FirebaseService.currentUserSubject.value;
     if (currentUser.driver == false) {
       this.router.navigateByUrl('/home/driver');
+      this.displayService.filterFavorites = true;
+      this.displayService.applyFilters();
     } else {
       this.router.navigateByUrl('/home/supplier');
+      this.displayService.filterFavorites = true;
+      this.displayService.applyFilters();
     }
   }
 
@@ -85,7 +92,4 @@ export class DashboardComponent {
     }
     return greeting;
   }
-
-  
-
 }

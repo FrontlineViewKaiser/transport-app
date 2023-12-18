@@ -1,6 +1,5 @@
-
 <section>
-    <div *ngIf="!loginService.signUp" class="login-field">
+    <div *ngIf="!loginService.signUp && !loginService.passwordRecovery" class="login-field">
         <div class="headline-wrapper">
             <h1>Welcome!</h1>
             <mat-divider class="mat-divider"></mat-divider>
@@ -9,12 +8,36 @@
         <div class="input-wrapper">
             <input type="text" placeholder="E-Mail" [formControl]="loginService.loginEmailFormControl">
             <input type="text" placeholder="Password" [formControl]="loginService.loginPasswordFormControl">
+            <mat-error *ngIf="loginService.loginError">
+                Incorrect Password or Email
+            </mat-error>
         </div>
+        <div>Forgot your Password? Recover it <a (click)="loginService.passwordRecovery = true">here.</a></div>
         <div class="button-wrapper">
             <button mat-raised-button (click)="loginService.signUp = true">Create Account</button>
             <button mat-raised-button (click)="loginService.logIn()" color="primary">Login</button>
         </div>
     </div>
+    <div *ngIf="loginService.passwordRecovery" class="login-field">
+        <div class="headline-wrapper">
+            <h1>Welcome!</h1>
+            <mat-divider class="mat-divider"></mat-divider>
+        </div>
+
+        <div class="input-wrapper">
+            <input type="text" placeholder="E-Mail" [formControl]="loginService.resetEmailFormControl">
+        </div>
+        <mat-error *ngIf="loginService.resetError">
+            Email not found
+        </mat-error>
+        <div class="button-wrapper">
+            <button mat-raised-button (click)="loginService.passwordRecovery = false" >Go Back</button>
+            <button mat-raised-button (click)="loginService.sendRecoveryMail()" color="primary">Send Recovery Mail</button>
+        </div>
+    </div>
+
+    <div class="notification" *ngIf="loginService.resetSuccess">Your Recovery Email has been sent</div>
+
 
     <div class="signUp" *ngIf="loginService.signUp">
         <div *ngIf="loginService.signUp && (loginService.driver || loginService.supplier)" class="signup-container">
@@ -33,8 +56,8 @@
 
                         <mat-form-field class="example-full-width">
                             <mat-label>Email</mat-label>
-                            <input type="email" matInput [formControl]="loginService.emailFormControl" [errorStateMatcher]="loginService.matcher"
-                                placeholder="Ex.pat@example.com">
+                            <input type="email" matInput [formControl]="loginService.emailFormControl"
+                                [errorStateMatcher]="loginService.matcher" placeholder="Ex.pat@example.com">
                             <mat-error
                                 *ngIf="loginService.emailFormControl.hasError('email') && !loginService.emailFormControl.hasError('required')">
                                 Please enter a valid email address
@@ -72,7 +95,8 @@
                             <mat-form-field>
                                 <mat-label>Shipping from</mat-label>
                                 <mat-select [formControl]="loginService.locationsEUFormControl" multiple>
-                                    <mat-option *ngFor="let location of loginService.locationsEU" [value]="location">{{ location
+                                    <mat-option *ngFor="let location of loginService.locationsEU" [value]="location">{{
+                                        location
                                         }}</mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
@@ -83,7 +107,8 @@
                             <mat-form-field>
                                 <mat-label>Shipping to</mat-label>
                                 <mat-select [formControl]="loginService.locationsUAFormControl" multiple>
-                                    <mat-option *ngFor="let location of loginService.locationsUA" [value]="location">{{ location
+                                    <mat-option *ngFor="let location of loginService.locationsUA" [value]="location">{{
+                                        location
                                         }}</mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
@@ -94,7 +119,8 @@
                             <mat-form-field *ngIf="loginService.driver">
                                 <mat-label>Vehicle</mat-label>
                                 <mat-select [formControl]="loginService.vehicleFormControl" multiple>
-                                    <mat-option *ngFor="let vehicle of loginService.vehicles" [value]="vehicle">{{ vehicle
+                                    <mat-option *ngFor="let vehicle of loginService.vehicles" [value]="vehicle">{{
+                                        vehicle
                                         }}</mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
@@ -105,7 +131,8 @@
                             <mat-form-field>
                                 <mat-label>Goods</mat-label>
                                 <mat-select [formControl]="loginService.goodsFormControl" multiple>
-                                    <mat-option *ngFor="let good of loginService.goods" [value]="good">{{ good }}</mat-option>
+                                    <mat-option *ngFor="let good of loginService.goods" [value]="good">{{ good
+                                        }}</mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
                                     Goods are <strong>required</strong>

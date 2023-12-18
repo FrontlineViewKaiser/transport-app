@@ -10,6 +10,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -61,6 +62,7 @@ import { FormsModule } from '@angular/forms';
     MatTooltipModule,
     MatMenuModule,
     FormsModule,
+    MatButtonToggleModule,
     provideFirebaseApp(() => initializeApp({"projectId":"transport-app-c7031","appId":"1:679604706859:web:90e4b48a06c49b16a4d46e","storageBucket":"transport-app-c7031.appspot.com","apiKey":"AIzaSyDG9Plb8d3xAbedz1ZkCtwBiV6OLBKlnmI","authDomain":"transport-app-c7031.firebaseapp.com","messagingSenderId":"679604706859"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
