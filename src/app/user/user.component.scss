@@ -23,7 +23,8 @@ h3 {
 
 .field {
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
   white-space: nowrap;
 }
 

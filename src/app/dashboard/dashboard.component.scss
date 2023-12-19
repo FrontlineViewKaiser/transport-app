@@ -1,63 +1,79 @@
 .dashboard {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 24px;
+
+  .greetings-wrapper {
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 24px;
+    align-items: center;
+  }
 
-    .greetings-wrapper {
-        display: flex;
-        align-items: center;
-    }
-
-    h1 {
-        margin-top: 35%;
-        font-size: 56px;
-        line-height: 62px;
-    }
+  h1 {
+    margin-top: 35%;
+    font-size: 56px;
+    line-height: 62px;
+  }
 }
 
 .wrapper {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    max-width: 500px;
-    flex-wrap: wrap;
-    gap: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 500px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 224px;
+  aspect-ratio: 1;
+  background-color: #3f51b5;
+  color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 10px 3px grey;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: rgb(255, 255, 255);
+    color: #673ab7;
+  }
+
+  div {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 16px;
-    width: 224px;
-    aspect-ratio: 1;
-    background-color: #3f51b5;
-    color: white;
-    border-radius: 20px;
-    box-shadow: 0 0 10px 3px grey;
-    cursor: pointer;
+  }
 
-    &:hover {
-        transform: scale(1.05);
-        background-color: rgb(255, 255, 255);
-        color: #673AB7;
-    }
+  span {
+    font-size: 24px;
+    font-weight: 400;
+  }
 
-    div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    span {
-        font-size: 24px;
-        font-weight: 400;
-    }
-
-    .mat-icon {
-        font-size: 32px;
-        height: 32px;
-        width: 32px;
-    }
+  .mat-icon {
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+  }
 }
+
+@media (max-width: 605px) {
+  .dashboard {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .wrapper {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 505px) {
+    h1 {
+        font-size: 38px !important;
+      }
+  }

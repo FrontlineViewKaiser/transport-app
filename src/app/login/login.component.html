@@ -12,7 +12,7 @@
                 Incorrect Password or Email
             </mat-error>
         </div>
-        <div>Forgot your Password? Recover it <a (click)="loginService.passwordRecovery = true">here.</a></div>
+        <div class="password-reset">Forgot your Password? Recover it <a (click)="loginService.passwordRecovery = true">here.</a></div>
         <div class="button-wrapper">
             <button mat-raised-button (click)="loginService.signUp = true">Create Account</button>
             <button mat-raised-button (click)="loginService.logIn()" color="primary">Login</button>
@@ -20,9 +20,11 @@
     </div>
     <div *ngIf="loginService.passwordRecovery" class="login-field">
         <div class="headline-wrapper">
-            <h1>Welcome!</h1>
+            <h1>Enter your email</h1>
             <mat-divider class="mat-divider"></mat-divider>
         </div>
+
+         <!-- Here is the password recovery -->
 
         <div class="input-wrapper">
             <input type="text" placeholder="E-Mail" [formControl]="loginService.resetEmailFormControl">
@@ -32,11 +34,13 @@
         </mat-error>
         <div class="button-wrapper">
             <button mat-raised-button (click)="loginService.passwordRecovery = false" >Go Back</button>
-            <button mat-raised-button (click)="loginService.sendRecoveryMail()" color="primary">Send Recovery Mail</button>
+            <button mat-raised-button (click)="loginService.sendRecoveryMail()" color="primary">Recover</button>
         </div>
     </div>
 
     <div class="notification" *ngIf="loginService.resetSuccess">Your Recovery Email has been sent</div>
+
+ <!-- Here is the sign up -->
 
 
     <div class="signUp" *ngIf="loginService.signUp">
@@ -153,6 +157,8 @@
             </div>
         </div>
 
+        <!-- Here is the initial choice between supplier or driver before sign up -->
+
         <div class="choice-field" *ngIf="loginService.signUp && !loginService.driver && !loginService.supplier">
             <div class="headline-wrapper">
                 <h1>Are you looking to ship or provide supplies?</h1>
@@ -160,12 +166,12 @@
             </div>
             <div class="choice-wrapper">
                 <button mat-raised-button color="primary" (click)="loginService.driver = true">
-                    I do the shipping
+                    <div>I do the shipping</div>
                     <mat-icon class="icon" fontIcon="local_shipping"></mat-icon>
                 </button>
                 <button mat-raised-button color="primary" (click)="loginService.supplier = true">
-                    I provide supplies
-                    <mat-icon class="icon" fontIcon="emoji_people"></mat-icon>
+                    <div>I provide supplies</div> 
+                    <mat-icon class="icon">pallet</mat-icon>
                 </button>
             </div>
 

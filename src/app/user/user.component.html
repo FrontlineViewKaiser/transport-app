@@ -42,19 +42,19 @@
     <mat-card class="transport">
         <mat-card-content class="field">
             <h3>Shipping from:</h3>
-            <p>{{(fireBaseService.currentUserSubject | async)?.profile.from}}</p>
+            <p *ngFor="let from of (fireBaseService.currentUserSubject | async)?.profile.from" >{{from}}</p>
         </mat-card-content>
         <mat-card-content class="field">
             <h3>Shipping to:</h3>
-            <p>{{(fireBaseService.currentUserSubject | async)?.profile.to}}</p>
+            <p *ngFor="let to of (fireBaseService.currentUserSubject | async)?.profile.to" >{{to}}</p>
         </mat-card-content>
         <mat-card-content class="field">
             <h3>Is Shipping:</h3>
-            <p>{{(fireBaseService.currentUserSubject | async)?.profile.goods}}</p>
+            <p *ngFor="let good of (fireBaseService.currentUserSubject | async)?.profile.goods" >{{good}}</p>
         </mat-card-content>
         <mat-card-content class="field" *ngIf="(fireBaseService.currentUserSubject | async)?.driver">
             <h3>Vehicle:</h3>
-            <p>{{(fireBaseService.currentUserSubject | async)?.profile.vehicle}}</p>
+            <p *ngFor="let vehicle of (fireBaseService.currentUserSubject | async)?.profile.vehicle" >{{vehicle}}</p>
         </mat-card-content>
 
     </mat-card>

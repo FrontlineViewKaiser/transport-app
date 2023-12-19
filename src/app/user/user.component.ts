@@ -15,6 +15,7 @@ import { sendEmailVerification } from '@angular/fire/auth';
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent {
+  userSubscription
   authSubscription;
   userVerified;
 
@@ -35,6 +36,8 @@ export class UserComponent {
       }
     );
   }
+
+
   resendEmailVerification() {
     sendEmailVerification(this.loginService.auth.currentUser)
   }
