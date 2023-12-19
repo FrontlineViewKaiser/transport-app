@@ -26,7 +26,6 @@ import { DriverComponent } from './driver/driver.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { ContactDialogueComponent } from './contact-dialogue/contact-dialogue.component';
 import { DetailDialogueComponent } from './detail-dialogue/detail-dialogue.component';
 import { EditDialogueComponent } from './edit-dialogue/edit-dialogue.component';
 import { FormsModule } from '@angular/forms';
@@ -41,7 +40,7 @@ import { FormsModule } from '@angular/forms';
     SupplierComponent,
     HomeComponent,
     LoginComponent,
-    ContactDialogueComponent,
+
     DetailDialogueComponent,
     EditDialogueComponent
   ],

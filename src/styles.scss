@@ -42,3 +42,21 @@ body {
   background: #36459b;
 }
 
+.scroll-minimal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-minimal::-webkit-scrollbar-track {
+  background:  rgba(112, 112, 112, 0.048)
+}
+
+.scroll-minimal::-webkit-scrollbar-thumb {
+  background: #3f51b51e;
+  border-radius: 4px;
+}
+
+.scroll-minimal::-webkit-scrollbar-thumb:hover {
+  background: #36459b59;
+}
+
+

@@ -6,14 +6,20 @@
   </button>
 
 
-  <input type="text" placeholder="Search..." [(ngModel)]="this.displayService.searchQuery" (keyup)="this.displayService.search('supplier')">
+  <input type="text" placeholder="Search..." [(ngModel)]="this.displayService.searchQuery"
+    (keyup)="this.displayService.search('supplier')">
 </div>
 
 
 <div class="filters" *ngIf="filterSelect">
+  <button (click)="this.displayService.filterForFavorites();" mat-icon-button matTooltip="Filter for Favorites">
+    <mat-icon *ngIf="!this.displayService.filterFavorites">stars</mat-icon>
+    <mat-icon *ngIf="this.displayService.filterFavorites" style="color: gold;">stars</mat-icon>
+  </button>
   <mat-form-field>
     <mat-label>Shipping from</mat-label>
-    <mat-select multiple [(ngModel)]="this.displayService.selectedLocationFrom" (selectionChange)="this.displayService.applyFilters();">
+    <mat-select multiple [(ngModel)]="this.displayService.selectedLocationFrom"
+      (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let location of loginService.locationsEU" [value]="location">{{
         location
         }}</mat-option>
@@ -21,7 +27,8 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Shipping to</mat-label>
-    <mat-select multiple [(ngModel)]="this.displayService.selectedLocationTo" (selectionChange)="this.displayService.applyFilters();">
+    <mat-select multiple [(ngModel)]="this.displayService.selectedLocationTo"
+      (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let location of loginService.locationsUA" [value]="location">{{
         location
         }}</mat-option>
@@ -29,39 +36,60 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Shipping from</mat-label>
-    <mat-select multiple [(ngModel)]="this.displayService.selectedGoods" (selectionChange)="this.displayService.applyFilters();">
+    <mat-label>Goods</mat-label>
+    <mat-select multiple [(ngModel)]="this.displayService.selectedGoods"
+      (selectionChange)="this.displayService.applyFilters();">
       <mat-option *ngFor="let goods of loginService.goods" [value]="goods">{{
         goods
         }}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-button-toggle-group appearance="legacy">
-    <mat-button-toggle class="toggle-button" (click)="this.displayService.filterForFavorites();">Favorites</mat-button-toggle>
-  </mat-button-toggle-group>
+
+
 
 
 </div>
 
 
+
 <div class="wrapper">
-  <mat-card class="supplier-card" *ngFor="let supplier of this.displayService.suppliers">
-    <mat-card-header class="header" (click)="this.displayService.openDialog(DetailDialogue, supplier)">
+  <mat-card class="supplier-card" *ngFor="let supplier of this.displayService.suppliers, let index = index">
+    <mat-card-header class="header" (click)="this.displayService.openDialog(displayService.DetailDialogue, supplier)">
       <mat-card-title>{{supplier.profile.name}}</mat-card-title>
     </mat-card-header>
-    <img (click)="this.displayService.openDialog(DetailDialogue, supplier)" src="assets/img/1672319267903.jpg" alt="">
-    <mat-card-content (click)="this.displayService.openDialog(DetailDialogue, supplier)">
-      <h3>Needs Shipping from:</h3>
-      <p *ngFor="let from of supplier.profile.from">{{ from }}</p>
-      <h3>Needs Shipping to:</h3>
-      <p *ngFor="let to of supplier.profile.to">{{ to }}</p>
-      <h3>Shipping of:</h3>
-      <p *ngFor="let good of supplier.profile.goods">{{ good }}</p>
+    <img (click)="this.displayService.openDialog(displayService.DetailDialogue, supplier)" src="{{supplier.img}}" alt="">
+    <mat-card-content (click)="this.displayService.openDialog(displayService.DetailDialogue, supplier)">
+      <h3>Shipping from:</h3>
+      <div class="paragraph-container scroll-minimal">
+        <p *ngFor="let location of supplier.profile.from">{{ location }}</p>
+      </div>
+
+      <h3>Shipping to:</h3>
+      <div class="paragraph-container scroll-minimal">
+        <p *ngFor="let destination of supplier.profile.to">{{ destination }}</p>
+      </div>
+
+      <h3>Is Shipping:</h3>
+      <div class="paragraph-container scroll-minimal">
+        <p *ngFor="let goods of supplier.profile.goods">{{ goods }}</p>
+      </div>
     </mat-card-content>
     <mat-card-actions class="buttons">
-      <button (click)="this.displayService.openDialog(ContactDialogue, supplier)">
-        <mat-icon>call</mat-icon>
+      <button [matMenuTriggerFor]="menu">
+        <mat-icon>question_answer</mat-icon>
       </button>
+      <mat-menu #menu="matMenu">
+        <div class="mat-menu">
+          <a href="mailto:{{supplier.profile.email}}">
+            <mat-icon class="contact-icons">mail</mat-icon>
+            {{supplier.profile.email}}
+          </a>
+          <a href="tel:{{supplier.profile.tel}}">
+            <mat-icon class="contact-icons">call</mat-icon>
+            {{supplier.profile.tel}}
+          </a>
+        </div>
+      </mat-menu>
       <button (click)="this.displayService.toggleFavorite(supplier.id)">
         <mat-icon *ngIf="!this.displayService.favorite(supplier.id)">stars</mat-icon>
         <mat-icon *ngIf="this.displayService.favorite(supplier.id)" style="color: gold;">stars</mat-icon>

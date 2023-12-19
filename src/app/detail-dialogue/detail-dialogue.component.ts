@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DisplayService } from '../display.service';
 
 @Component({
   selector: 'app-detail-dialogue',
@@ -9,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class DetailDialogueComponent {
   constructor(
     public dialogRef: MatDialogRef<DetailDialogueComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public DisplayService: DisplayService
   ) {}
 }

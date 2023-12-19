@@ -37,61 +37,61 @@
 
                     </div>
                 </div>
-                <div>
-                    <div class="wrapper">
-                        <h2>Business</h2>
-                        <div class="container">
-                            <mat-form-field>
-                                <mat-label>Shipping from</mat-label>
-                                <mat-select [formControl]="loginService.locationsEUFormControl" multiple>
-                                    <mat-option *ngFor="let location of loginService.locationsEU" [value]="location">{{
-                                        location
-                                        }}</mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
-                                    Locations are <strong>required</strong>
-                                </mat-error>
-                            </mat-form-field>
 
-                            <mat-form-field>
-                                <mat-label>Shipping to</mat-label>
-                                <mat-select [formControl]="loginService.locationsUAFormControl" multiple>
-                                    <mat-option *ngFor="let location of loginService.locationsUA" [value]="location">{{
-                                        location
-                                        }} </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
-                                    Locations are <strong>required</strong>
-                                </mat-error>
-                            </mat-form-field>
+                <div class="wrapper">
+                    <h2>Business</h2>
+                    <div class="container">
+                        <mat-form-field>
+                            <mat-label>Shipping from</mat-label>
+                            <mat-select [formControl]="loginService.locationsEUFormControl" multiple>
+                                <mat-option *ngFor="let location of loginService.locationsEU" [value]="location">{{
+                                    location
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
+                                Locations are <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
 
-                            <mat-form-field *ngIf="(firebaseService.currentUserSubject | async).driver">
-                                <mat-label>Vehicle</mat-label>
-                                <mat-select [formControl]="loginService.vehicleFormControl" multiple>
-                                    <mat-option *ngFor="let vehicle of loginService.vehicles" [value]="vehicle">{{
-                                        vehicle
-                                        }}</mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
-                                    Vehicle is <strong>required</strong>
-                                </mat-error>
-                            </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Shipping to</mat-label>
+                            <mat-select [formControl]="loginService.locationsUAFormControl" multiple>
+                                <mat-option *ngFor="let location of loginService.locationsUA" [value]="location">{{
+                                    location
+                                    }} </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
+                                Locations are <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
 
-                            <mat-form-field>
-                                <mat-label>Goods</mat-label>
-                                <mat-select [formControl]="loginService.goodsFormControl" multiple>
-                                    <mat-option *ngFor="let good of loginService.goods" [value]="good">{{ good
-                                        }}</mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
-                                    Goods are <strong>required</strong>
-                                </mat-error>
-                            </mat-form-field>
+                        <mat-form-field *ngIf="(firebaseService.currentUserSubject | async).driver">
+                            <mat-label>Vehicle</mat-label>
+                            <mat-select [formControl]="loginService.vehicleFormControl" multiple>
+                                <mat-option *ngFor="let vehicle of loginService.vehicles" [value]="vehicle">{{
+                                    vehicle
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
+                                Vehicle is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
 
-                        </div>
+                        <mat-form-field>
+                            <mat-label>Goods</mat-label>
+                            <mat-select [formControl]="loginService.goodsFormControl" multiple>
+                                <mat-option *ngFor="let good of loginService.goods" [value]="good">{{ good
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="loginService.locationsEUFormControl.hasError('required')">
+                                Goods are <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
                     </div>
-                    <span>*required fields</span>
                 </div>
+                <span>*required fields</span>
+
             </form>
 
             <div class="wrapper">
@@ -105,10 +105,13 @@
                         </mat-select>
                     </mat-form-field>
 
-                    <div class="notification" *ngIf="loginService.changePasswordSuccess">Your password has been changed</div>
-                    <div class="notification" style="color: red" *ngIf="loginService.passwordError">Password change not possible</div>
+                    <div class="notification" *ngIf="loginService.changePasswordSuccess">Your password has been changed
+                    </div>
+                    <div class="notification" style="color: red" *ngIf="loginService.passwordError">Password change not
+                        possible</div>
 
-                    <button *ngIf="!loginService.changePassword" mat-raised-button (click)="loginService.changePassword = true">change password</button>
+                    <button *ngIf="!loginService.changePassword" mat-raised-button
+                        (click)="loginService.changePassword = true">change password</button>
                     <mat-form-field *ngIf="loginService.changePassword" class="example-full-width">
                         <mat-label>Password</mat-label>
                         <input type="text" matInput [formControl]="loginService.passwordFormControl">
@@ -119,12 +122,13 @@
                             Password must be at least <strong>6 characters long</strong>
                         </mat-error>
                     </mat-form-field>
-                    <button *ngIf="loginService.changePassword" mat-raised-button (click)="loginService.updatePassword()">Set new password</button>
+                    <button *ngIf="loginService.changePassword" mat-raised-button
+                        (click)="loginService.updatePassword()">Set new password</button>
                 </div>
             </div>
         </div>
     </div>
-    
+
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-raised-button mat-dialog-close (click)="loginService.changePassword = false">Cancel</button>

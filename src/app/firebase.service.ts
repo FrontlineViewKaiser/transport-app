@@ -4,6 +4,7 @@ import {
   Firestore,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   onSnapshot,
   updateDoc,
@@ -16,9 +17,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class FirebaseService {
   userColl;
-  driverColl;
-  supplierColl;
-  reviewsColl;
   currentUser;
   currentUserRef;
   user;
@@ -93,11 +91,11 @@ export class FirebaseService {
     const auth = getAuth();
     const user = auth.currentUser;
     
-    deleteUser(user).then(() => {
+    deleteUser(user).then(async () => {
      console.log('yay')
+     await deleteDoc(doc(this.userColl, user.uid));
     }).catch((error) => {
       console.log('nay', error)
-      
     });
 }
   

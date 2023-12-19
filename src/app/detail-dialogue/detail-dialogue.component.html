@@ -1,28 +1,49 @@
-<h2 mat-dialog-title>{{data.driver.profile.name}}<mat-icon>stars</mat-icon></h2>
+<h2 mat-dialog-title>
+  {{data.user.profile.name}}
+  <button (click)="this.DisplayService.toggleFavorite(data.user.id)">
+    <mat-icon *ngIf="!this.DisplayService.favorite(data.user.id)">stars</mat-icon>
+    <mat-icon *ngIf="this.DisplayService.favorite(data.user.id)" style="color: gold;">stars</mat-icon>
+  </button>
+</h2>
 <mat-dialog-content class="mat-typography scroll">
-    <img src="assets/img/1672319267903.jpg"  alt="">
+  <img src="assets/img/1672319267903.jpg" alt="">
   <h3>Transports from</h3>
-  <p *ngFor="let location of data.driver.profile.from">{{ location }}</p>
+  <div class="paragraph-container scroll">
+    <p *ngFor="let location of data.user.profile.from">{{ location }}</p>
+  </div>
+
 
   <h3>Transports to</h3>
-  <p *ngFor="let destination of data.driver.profile.to">{{ destination }}</p>
+  <div class="paragraph-container scroll">
+    <p *ngFor="let destination of data.user.profile.to">{{ destination }}</p>
+  </div>
+
 
   <h3>Transports</h3>
-  <p *ngFor="let goods of data.driver.profile.goods">{{ goods }}</p>
+  <div class="paragraph-container scroll">
+    <p *ngFor="let goods of data.user.profile.goods">{{ goods }}</p>
+  </div>
+
 
   <h3>Vehicle</h3>
-  <p *ngFor="let vehicle of data.driver.profile.vehicle">{{ vehicle }}</p>
+  <div class="paragraph-container scroll">
+    <p *ngFor="let vehicle of data.user.profile.vehicle">{{ vehicle }}</p>
+  </div>
 
   <h3>Contact:</h3>
-  <p >{{data.driver.profile.tel}}</p>
-  <p>{{data.driver.profile.email}}</p>
+  <div class="contacts">
+    <a href="mailto:{{data.user.profile.email}}">
+      <mat-icon class="icon">mail</mat-icon>
+      <p>{{data.user.profile.email}}</p>
+    </a>
+    <a href="tel:{{data.user.profile.tel}}">
+      <mat-icon class="icon">call</mat-icon>
+      <p>{{data.user.profile.tel}}</p>
+    </a>
+  </div>
 
-  <h3>Reviews</h3>
-
-  <div></div>
 
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>close</button>
 </mat-dialog-actions>
-

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseService } from './firebase.service';
 import { LoginServiceService } from './login-service.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DetailDialogueComponent } from './detail-dialogue/detail-dialogue.component';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,8 @@ export class DisplayService {
   selectedLocationTo: string[] = [];
   selectedVehicles: string[] = [];
   selectedGoods: string[] = [];
+
+  DetailDialogue = DetailDialogueComponent;
 
   constructor(
     public dialog: MatDialog,
@@ -143,7 +146,7 @@ export class DisplayService {
   openDialog(component, user) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      driver: user,
+      user: user,
     };
     this.dialog.open(component, dialogConfig);
   }

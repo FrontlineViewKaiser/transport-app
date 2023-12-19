@@ -42,21 +42,28 @@
     <mat-card class="transport">
         <mat-card-content class="field">
             <h3>Shipping from:</h3>
-            <p *ngFor="let from of (fireBaseService.currentUserSubject | async)?.profile.from" >{{from}}</p>
+            <div class="paragraph-container scroll">
+                <p *ngFor="let from of (fireBaseService.currentUserSubject | async)?.profile.from">{{from}}</p>
+            </div>
         </mat-card-content>
         <mat-card-content class="field">
             <h3>Shipping to:</h3>
-            <p *ngFor="let to of (fireBaseService.currentUserSubject | async)?.profile.to" >{{to}}</p>
+            <div class="paragraph-container scroll">
+                <p *ngFor="let to of (fireBaseService.currentUserSubject | async)?.profile.to">{{to}}</p>
+            </div>
         </mat-card-content>
         <mat-card-content class="field">
             <h3>Is Shipping:</h3>
-            <p *ngFor="let good of (fireBaseService.currentUserSubject | async)?.profile.goods" >{{good}}</p>
+            <div class="paragraph-container scroll">
+                <p *ngFor="let good of (fireBaseService.currentUserSubject | async)?.profile.goods">{{good}}</p>
+            </div>
         </mat-card-content>
         <mat-card-content class="field" *ngIf="(fireBaseService.currentUserSubject | async)?.driver">
             <h3>Vehicle:</h3>
-            <p *ngFor="let vehicle of (fireBaseService.currentUserSubject | async)?.profile.vehicle" >{{vehicle}}</p>
+            <div class="paragraph-container scroll">
+                <p *ngFor="let vehicle of (fireBaseService.currentUserSubject | async)?.profile.vehicle">{{vehicle}}</p>
+            </div>
         </mat-card-content>
-
     </mat-card>
 
     <div class="bottom">
