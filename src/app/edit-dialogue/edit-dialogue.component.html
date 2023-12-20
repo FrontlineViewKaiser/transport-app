@@ -115,15 +115,17 @@
                     <mat-form-field *ngIf="loginService.changePassword" class="example-full-width">
                         <mat-label>Password</mat-label>
                         <input type="text" matInput [formControl]="loginService.passwordFormControl">
-                        <mat-error *ngIf="loginService.passwordFormControl.hasError('required')">
+                        <mat-error *ngIf="">
                             Password is <strong>required</strong>
                         </mat-error>
-                        <mat-error *ngIf="loginService.passwordFormControl.hasError('minlength')">
+                        <mat-error *ngIf="">
                             Password must be at least <strong>6 characters long</strong>
                         </mat-error>
                     </mat-form-field>
                     <button *ngIf="loginService.changePassword" mat-raised-button
-                        (click)="loginService.updatePassword()">Set new password</button>
+                        [disabled]="loginService.passwordFormControl.invalid" (click)="loginService.updatePassword()">
+                        Set new password
+                    </button>
                 </div>
             </div>
         </div>

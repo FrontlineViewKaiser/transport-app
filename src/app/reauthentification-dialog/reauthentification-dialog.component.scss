@@ -1,0 +1,45 @@
+.auth-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 24px 48px;
+  border-radius: 20px;
+  max-width: 520px;
+  min-width: 223px;
+  min-height: 300px;
+  gap: 26px;
+
+  .mat-divider {
+    height: 1px;
+    width: 50%;
+    background-color: rgb(63, 81, 181);
+  }
+
+  .input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  input {
+    width: calc(100% - 20px);
+    border-radius: 12px;
+    padding: 10px;
+    border: solid 1px grey;
+  }
+}
+
+.button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 400px) {
+    .auth-field {
+        padding: 24px 14px;
+    }
+}
+  

@@ -9,6 +9,8 @@ import { DetailDialogueComponent } from './detail-dialogue/detail-dialogue.compo
 })
 export class DisplayService {
   subscription;
+  currentUserSubscription;
+  currentUser 
   filterSelect: boolean = false;
   filterFavorites: boolean = false;
   drivers = [];
@@ -28,24 +30,44 @@ export class DisplayService {
     public FirebaseService: FirebaseService,
     public loginService: LoginServiceService
   ) {
-    this.fetchUsers();
+    this.currentUserSubscription = this.FirebaseService.currentUserSubject.subscribe(
+      (currentUser) => {
+        if (currentUser) {
+          this.currentUser = currentUser;
+          console.log(currentUser);
+          this.fetchUsers();
+        }
+      }
+    );
   }
 
   fetchUsers() {
     this.subscription = this.FirebaseService.UserSubscription().subscribe(
       (users) => {
+        // Filter out the current user
         this.allSuppliers = (users as any[]).filter(
-          (user) => user.driver === false
+          (user) => !user.driver && user.id !== this.currentUser.id
         );
 
         this.allDrivers = (users as any[]).filter(
-          (user) => user.driver === true
+          (user) => user.driver && user.id !== this.currentUser.id
         );
+
         this.search('driver');
         this.search('supplier');
       }
     );
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.currentUserSubscription) {
+      this.currentUserSubscription.unsubscribe();
+    }
+  }
+
 
   search(userType: 'driver' | 'supplier') {
     let users = userType === 'driver' ? this.allDrivers : this.allSuppliers;

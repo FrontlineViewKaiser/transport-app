@@ -87,16 +87,6 @@ export class FirebaseService {
     signOut(auth).catch((error) => {});
   }
 
-  deleteUser() {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    
-    deleteUser(user).then(async () => {
-     console.log('yay')
-     await deleteDoc(doc(this.userColl, user.uid));
-    }).catch((error) => {
-      console.log('nay', error)
-    });
-}
+
   
 }

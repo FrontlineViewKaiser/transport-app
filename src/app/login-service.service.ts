@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from './models/error-state-matcher';
 import {
+  EmailAuthProvider,
   createUserWithEmailAndPassword,
+  deleteUser,
   getAuth,
+  reauthenticateWithCredential,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -12,7 +15,10 @@ import {
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { FirebaseService } from './firebase.service';
-import { doc, setDoc } from '@angular/fire/firestore';
+import { deleteDoc, doc, setDoc } from '@angular/fire/firestore';
+import { DisplayService } from './display.service';
+import { ReauthentificationDialogComponent } from './reauthentification-dialog/reauthentification-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +26,8 @@ import { doc, setDoc } from '@angular/fire/firestore';
 export class LoginServiceService {
   constructor(
     private FirebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {}
 
   locationsEU = [
@@ -182,6 +189,9 @@ export class LoginServiceService {
   changePassword: boolean = false;
   passwordError: boolean = false;
   changePasswordSuccess: boolean = false;
+  reauthError: boolean = false;
+  reauthentificationDialog = ReauthentificationDialogComponent;
+  dialogRef;
 
   compileProfile() {
     if (this.driver) {
@@ -307,13 +317,45 @@ export class LoginServiceService {
     updatePassword(this.auth.currentUser, newPassword)
       .then(() => {
         this.changePassword = false;
-        this.changePasswordSuccess = true
+        this.changePasswordSuccess = true;
         setTimeout(() => {
-          this.changePasswordSuccess = false
+          this.changePasswordSuccess = false;
         }, 2000);
       })
       .catch((error) => {
-        this.passwordError = true;
+        this.dialogRef = this.dialog.open(this.reauthentificationDialog);
+      });
+  }
+
+  reauthenticate(actionType: 'delete' | 'password') {
+    const action =
+      actionType === 'delete' ? this.deleteUser() : this.updatePassword();
+    const user = this.auth.currentUser;
+    let email = user.email;
+    let password = this.loginPasswordFormControl.value;
+    const credential = EmailAuthProvider.credential(email, password);
+
+    reauthenticateWithCredential(user, credential)
+      .then(() => {
+        this.dialogRef.close();
+        action
+      })
+      .catch((error) => {
+        this.reauthError = true;
+      });
+  }
+
+  deleteUser() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    deleteUser(user)
+      .then(async () => {
+        console.log('yay');
+        await deleteDoc(doc(this.FirebaseService.userColl, user.uid));
+      })
+      .catch((error) => {
+        console.log('nay', error);
       });
   }
 }

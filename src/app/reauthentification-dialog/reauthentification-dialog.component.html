@@ -1,0 +1,17 @@
+<div class="auth-field">
+    <div class="headline-wrapper">
+        <h1>Confirm your password</h1>
+        <mat-divider class="mat-divider"></mat-divider>
+    </div>
+    <div class="input-wrapper">
+        <input type="text" placeholder="Password" [formControl]="LoginService.loginPasswordFormControl">
+        <mat-error *ngIf="LoginService.reauthError">
+            Incorrect Password
+        </mat-error>
+    </div>
+    <div class="button-wrapper">
+        <button mat-raised-button mat-dialog-close>Go Back</button>
+        <button mat-raised-button (click)="LoginService.reauthenticate('password')" color="primary"
+            [disabled]="LoginService.loginPasswordFormControl.invalid">Confirm</button>
+    </div>
+</div>

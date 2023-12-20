@@ -29,6 +29,7 @@ import { LoginComponent } from './login/login.component';
 import { DetailDialogueComponent } from './detail-dialogue/detail-dialogue.component';
 import { EditDialogueComponent } from './edit-dialogue/edit-dialogue.component';
 import { FormsModule } from '@angular/forms';
+import { ReauthentificationDialogComponent } from './reauthentification-dialog/reauthentification-dialog.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { FormsModule } from '@angular/forms';
     LoginComponent,
 
     DetailDialogueComponent,
-    EditDialogueComponent
+    EditDialogueComponent,
+    ReauthentificationDialogComponent
   ],
   imports: [
     BrowserModule,
