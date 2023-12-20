@@ -67,7 +67,7 @@
     </mat-card>
 
     <div class="bottom">
-        <mat-icon (click)="this.loginService.deleteUser()" class="delete">delete_forever</mat-icon>
+        <mat-icon (click)="this.loginService.deleteUser()" matTooltip="delete your Profile" class="delete">delete_forever</mat-icon>
         <div class="button-wrapper">
             <button (click)="openDialog()" mat-fab extended color="primary">
                 <mat-icon>edit</mat-icon>

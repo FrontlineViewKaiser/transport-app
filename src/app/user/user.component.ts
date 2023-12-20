@@ -28,10 +28,8 @@ export class UserComponent {
     this.authSubscription = this.fireBaseService.authSubject.subscribe(
       (user) => {
         if (user) {
-          console.log('Email Verified:', user.emailVerified);
           this.userVerified = user.emailVerified;
         } else {
-          console.log('No user data available');
         }
       }
     );

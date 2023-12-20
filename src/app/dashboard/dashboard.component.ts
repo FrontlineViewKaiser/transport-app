@@ -25,7 +25,7 @@ export class DashboardComponent {
         this.drivers = (users as any[]).filter((user) => user.driver === true);
       }
     );
-    console.log(this.FirebaseService.currentUserSubject);
+
   }
 
   ngAfterContentInit() {

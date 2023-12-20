@@ -34,7 +34,7 @@ export class DisplayService {
       this.FirebaseService.currentUserSubject.subscribe((currentUser) => {
         if (currentUser) {
           this.currentUser = currentUser;
-          console.log(currentUser);
+
           this.fetchUsers();
         }
       });

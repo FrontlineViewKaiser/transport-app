@@ -6,7 +6,7 @@
   </button>
 </h2>
 <mat-dialog-content class="mat-typography scroll">
-  <img src="assets/img/1672319267903.jpg" alt="">
+  <img src="{{data.user.img}}" alt="">
   <h3>Transports from</h3>
   <div class="paragraph-container scroll">
     <p *ngFor="let location of data.user.profile.from">{{ location }}</p>

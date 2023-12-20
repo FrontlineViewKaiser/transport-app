@@ -8,11 +8,12 @@
         <div class="input-wrapper">
             <input type="text" placeholder="E-Mail" [formControl]="loginService.loginEmailFormControl">
             <input type="text" placeholder="Password" [formControl]="loginService.loginPasswordFormControl">
-            <mat-error *ngIf="loginService.loginError">
+            <mat-error class="login-error" *ngIf="loginService.loginError">
                 Incorrect Password or Email
             </mat-error>
         </div>
-        <div class="password-reset">Forgot your Password? Recover it <a (click)="loginService.passwordRecovery = true">here.</a></div>
+        <div class="password-reset">Forgot your Password? Recover it <a
+                (click)="loginService.passwordRecovery = true">here.</a></div>
         <div class="button-wrapper">
             <button mat-raised-button (click)="loginService.signUp = true">Create Account</button>
             <button mat-raised-button (click)="loginService.logIn()" color="primary">Login</button>
@@ -24,23 +25,24 @@
             <mat-divider class="mat-divider"></mat-divider>
         </div>
 
-         <!-- Here is the password recovery -->
+        <!-- Here is the password recovery -->
 
         <div class="input-wrapper">
-            <input type="text" placeholder="E-Mail" [formControl]="loginService.resetEmailFormControl">
+            <input class="login-error" type="text" placeholder="E-Mail" [formControl]="loginService.resetEmailFormControl">
+            <mat-error *ngIf="loginService.resetError">
+                Email not found
+            </mat-error>
         </div>
-        <mat-error *ngIf="loginService.resetError">
-            Email not found
-        </mat-error>
+
         <div class="button-wrapper">
-            <button mat-raised-button (click)="loginService.passwordRecovery = false" >Go Back</button>
+            <button mat-raised-button (click)="loginService.passwordRecovery = false">Go Back</button>
             <button mat-raised-button (click)="loginService.sendRecoveryMail()" color="primary">Recover</button>
         </div>
     </div>
 
     <div class="notification" *ngIf="loginService.resetSuccess">Your Recovery Email has been sent</div>
 
- <!-- Here is the sign up -->
+    <!-- Here is the sign up -->
 
 
     <div class="signUp" *ngIf="loginService.signUp">
@@ -154,6 +156,12 @@
                     (click)="loginService.signUp = false; loginService.driver = false; loginService.supplier = false;">Login</button>
                 <button mat-raised-button color="primary" (click)="loginService.createAuthentication()">Create
                     Account</button>
+                    <mat-error class="signup-error" *ngIf="loginService.doubleMailError">
+                        Email already in use
+                    </mat-error>
+                    <mat-error class="signup-error" *ngIf="loginService.emptyError">
+                        Fill out all required forms!
+                    </mat-error>
             </div>
         </div>
 
@@ -170,7 +178,7 @@
                     <mat-icon class="icon" fontIcon="local_shipping"></mat-icon>
                 </button>
                 <button mat-raised-button color="primary" (click)="loginService.supplier = true">
-                    <div>I provide supplies</div> 
+                    <div>I provide supplies</div>
                     <mat-icon class="icon">pallet</mat-icon>
                 </button>
             </div>

@@ -54,7 +54,7 @@ export class EditDialogueComponent {
     profile.goods = this.loginService.goodsFormControl.value;
     this.firebaseService.currentUser.driver = this.driverStatus;
 
-    console.log(this.firebaseService.currentUser.driver);
+
   }
 
   ngOnDestroy() {

@@ -28,7 +28,12 @@ export class LoginServiceService {
     private FirebaseService: FirebaseService,
     private router: Router,
     public dialog: MatDialog
-  ) {}
+  ) {
+    this.signUp = false;
+    this.driver = false;
+    this.supplier = false;
+
+  }
 
   locationsEU = [
     'All of Europe',
@@ -190,10 +195,12 @@ export class LoginServiceService {
   passwordError: boolean = false;
   changePasswordSuccess: boolean = false;
   reauthError: boolean = false;
+  doubleMailError: boolean = false;
+  emptyError: boolean = false;
   reauthentificationDialog = ReauthentificationDialogComponent;
   dialogRef;
 
-  compileProfile() {
+  returnProfile() {
     if (this.driver) {
       return {
         name: this.nameFormControl.value,
@@ -226,15 +233,16 @@ export class LoginServiceService {
     createUserWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
         this.postUserProfile(user.uid);
         this.firebaseSignIn(email, password);
         sendEmailVerification(this.auth.currentUser);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        if(error.code == 'auth/email-already-in-use') {
+          this.doubleMailError = true
+        } else if(error.code == 'auth/invalid-email') {
+          this.emptyError = true
+        }
       });
   }
 
@@ -268,13 +276,13 @@ export class LoginServiceService {
         console.error(err);
       })
       .then((docRef: any) => {
-        console.log(userData);
+
       });
   }
 
   saveUserProfile(uid) {
     return {
-      profile: this.compileProfile(),
+      profile: this.returnProfile(),
       favorites: [],
       id: uid,
       driver: this.driver,
@@ -285,7 +293,6 @@ export class LoginServiceService {
   updateEmail(email) {
     updateEmail(this.auth.currentUser, email)
       .then(() => {
-        console.log('User Email has been changed to:', email);
         this.FirebaseService.updateCurrentUser();
         sendEmailVerification(this.auth.currentUser);
       })
@@ -351,11 +358,9 @@ export class LoginServiceService {
 
     deleteUser(user)
       .then(async () => {
-        console.log('yay');
         await deleteDoc(doc(this.FirebaseService.userColl, user.uid));
       })
       .catch((error) => {
-        console.log('nay', error);
       });
   }
 }

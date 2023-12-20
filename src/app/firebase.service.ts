@@ -40,7 +40,6 @@ export class FirebaseService {
         this.user = user
         this.authSubject.next(user);
       } else {
-        console.log('no User')
         this.unsubUser();
         this.unsubCurrentUser();
         this.router.navigate(['']);
@@ -55,7 +54,6 @@ export class FirebaseService {
         users.forEach((user) => {
           userList.push(user.data());
         });
-        console.log('Userlist:', userList);
         subscriber.next(userList);
       });
     });
@@ -65,7 +63,6 @@ export class FirebaseService {
       this.unsubCurrentUser = onSnapshot(doc(this.userColl, uid), (user) => {
         this.currentUserRef = doc(this.userColl, uid);
         this.currentUser = user.data();
-        console.log('currentUser:', this.currentUser);
         this.currentUserSubject.next(user.data());
       });
 
@@ -75,7 +72,6 @@ export class FirebaseService {
     await updateDoc(this.currentUserRef, {
       profile: this.currentUser.profile,
       favorites: this.currentUser.favorites,
-      color: this.currentUser.color,
       id: this.currentUser.id,
       driver: this.currentUser.driver,
       img: this.currentUser.img,
