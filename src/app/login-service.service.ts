@@ -28,12 +28,7 @@ export class LoginServiceService {
     private FirebaseService: FirebaseService,
     private router: Router,
     public dialog: MatDialog
-  ) {
-    this.signUp = false;
-    this.driver = false;
-    this.supplier = false;
-
-  }
+  ) {}
 
   locationsEU = [
     'All of Europe',
@@ -236,12 +231,16 @@ export class LoginServiceService {
         this.postUserProfile(user.uid);
         this.firebaseSignIn(email, password);
         sendEmailVerification(this.auth.currentUser);
+        this.resetForm()
+        this.signUp = false;
+        this.driver = false;
+        this.supplier = false;
       })
       .catch((error) => {
-        if(error.code == 'auth/email-already-in-use') {
-          this.doubleMailError = true
-        } else if(error.code == 'auth/invalid-email') {
-          this.emptyError = true
+        if (error.code == 'auth/email-already-in-use') {
+          this.doubleMailError = true;
+        } else if (error.code == 'auth/invalid-email') {
+          this.emptyError = true;
         }
       });
   }
@@ -259,6 +258,7 @@ export class LoginServiceService {
         const user = userCredential.user;
         this.router.navigate(['/home/dash']);
         this.loginError = false;
+        this.resetForm()
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -275,9 +275,7 @@ export class LoginServiceService {
       .catch((err) => {
         console.error(err);
       })
-      .then((docRef: any) => {
-
-      });
+      .then((docRef: any) => {});
   }
 
   saveUserProfile(uid) {
@@ -345,7 +343,7 @@ export class LoginServiceService {
     reauthenticateWithCredential(user, credential)
       .then(() => {
         this.dialogRef.close();
-        action
+        action;
       })
       .catch((error) => {
         this.reauthError = true;
@@ -360,7 +358,20 @@ export class LoginServiceService {
       .then(async () => {
         await deleteDoc(doc(this.FirebaseService.userColl, user.uid));
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
+  }
+
+  resetForm() {
+    this.loginEmailFormControl.reset('')
+    this.loginPasswordFormControl.reset('') 
+    this.resetEmailFormControl.reset('') 
+    this.emailFormControl.reset('') 
+    this.nameFormControl.reset('') 
+    this.passwordFormControl.reset('') 
+    this.phoneFormControl.reset('') 
+    this.locationsEUFormControl.reset('')
+    this.locationsUAFormControl.reset('') 
+    this.vehicleFormControl.reset('')
+    this.goodsFormControl.reset('') 
   }
 }

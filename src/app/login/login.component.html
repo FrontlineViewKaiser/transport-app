@@ -6,7 +6,7 @@
         </div>
 
         <div class="input-wrapper">
-            <input type="text" placeholder="E-Mail" [formControl]="loginService.loginEmailFormControl">
+            <input type="password" placeholder="E-Mail" [formControl]="loginService.loginEmailFormControl">
             <input type="text" placeholder="Password" [formControl]="loginService.loginPasswordFormControl">
             <mat-error class="login-error" *ngIf="loginService.loginError">
                 Incorrect Password or Email

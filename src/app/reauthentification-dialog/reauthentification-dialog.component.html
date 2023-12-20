@@ -4,7 +4,7 @@
         <mat-divider class="mat-divider"></mat-divider>
     </div>
     <div class="input-wrapper">
-        <input type="text" placeholder="Password" [formControl]="LoginService.loginPasswordFormControl">
+        <input type="password" placeholder="Password" [formControl]="LoginService.loginPasswordFormControl">
         <mat-error *ngIf="LoginService.reauthError">
             Incorrect Password
         </mat-error>
