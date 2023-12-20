@@ -10,7 +10,7 @@ import { DetailDialogueComponent } from './detail-dialogue/detail-dialogue.compo
 export class DisplayService {
   subscription;
   currentUserSubscription;
-  currentUser 
+  currentUser;
   filterSelect: boolean = false;
   filterFavorites: boolean = false;
   drivers = [];
@@ -30,21 +30,19 @@ export class DisplayService {
     public FirebaseService: FirebaseService,
     public loginService: LoginServiceService
   ) {
-    this.currentUserSubscription = this.FirebaseService.currentUserSubject.subscribe(
-      (currentUser) => {
+    this.currentUserSubscription =
+      this.FirebaseService.currentUserSubject.subscribe((currentUser) => {
         if (currentUser) {
           this.currentUser = currentUser;
           console.log(currentUser);
           this.fetchUsers();
         }
-      }
-    );
+      });
   }
 
   fetchUsers() {
     this.subscription = this.FirebaseService.UserSubscription().subscribe(
       (users) => {
-        // Filter out the current user
         this.allSuppliers = (users as any[]).filter(
           (user) => !user.driver && user.id !== this.currentUser.id
         );
@@ -67,7 +65,6 @@ export class DisplayService {
       this.currentUserSubscription.unsubscribe();
     }
   }
-
 
   search(userType: 'driver' | 'supplier') {
     let users = userType === 'driver' ? this.allDrivers : this.allSuppliers;
